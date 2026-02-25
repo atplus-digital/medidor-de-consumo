@@ -1,21 +1,21 @@
-POST http://localhost:3000/api/log_energy HTTP/1.1
+POST http://localhost:3000/api/energy HTTP/1.1
 Content-Type: application/json
 
 {
-	"meterId": "1",
-	"activePower": 100.0,
-	"reactivePower": 50.0,
-	"apparentPower": 111.8,
-	"voltage": 230.0,
-	"current": 0.43,
-	"powerFactor": 0.89,
-	"phaseAngle": 27.0,
-	"frequency": 50.0,
-	"consumedEnergy": 0.5,
-	"generatedEnergy": 0.0,
-	"operationTime": 60.0,
-	"rawData": {
-		"example_field": "example_value"
-    }	
+	"id": "123",
+	"pa": 100.0,
+	"qa": 50.0,
+	"sa": 111.8,
+	"uarms": 230.0,
+	"iarms": 0.43,
+	"pfa": 0.89,
+	"pga": 27.0,
+	"freq": 50.0,
+	"epa_c": 0.5,
+	"epa_g": 2.0,
+	"tpsd": 60.0
 }
-    
+
+###
+
+GET http://localhost:3000/api/energy?id=123&pa=100.00&qa=50.0&uarms=230.0&sa=111.8&iarms=0.43&pfa=0.89&pga=27.0&freq=50.0&epa_c=0.5&epa_g=2.0&tpsd=60.0 HTTP/1.1
