@@ -10,43 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiLog_energyRouteImport } from './routes/api/log_energy'
+import { Route as ApiEnergyRouteImport } from './routes/api/energy'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiLog_energyRoute = ApiLog_energyRouteImport.update({
-  id: '/api/log_energy',
-  path: '/api/log_energy',
+const ApiEnergyRoute = ApiEnergyRouteImport.update({
+  id: '/api/energy',
+  path: '/api/energy',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/api/log_energy': typeof ApiLog_energyRoute
+  '/api/energy': typeof ApiEnergyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/api/log_energy': typeof ApiLog_energyRoute
+  '/api/energy': typeof ApiEnergyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/api/log_energy': typeof ApiLog_energyRoute
+  '/api/energy': typeof ApiEnergyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/log_energy'
+  fullPaths: '/' | '/api/energy'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/log_energy'
-  id: '__root__' | '/' | '/api/log_energy'
+  to: '/' | '/api/energy'
+  id: '__root__' | '/' | '/api/energy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ApiLog_energyRoute: typeof ApiLog_energyRoute
+  ApiEnergyRoute: typeof ApiEnergyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,11 +58,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/log_energy': {
-      id: '/api/log_energy'
-      path: '/api/log_energy'
-      fullPath: '/api/log_energy'
-      preLoaderRoute: typeof ApiLog_energyRouteImport
+    '/api/energy': {
+      id: '/api/energy'
+      path: '/api/energy'
+      fullPath: '/api/energy'
+      preLoaderRoute: typeof ApiEnergyRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -70,7 +70,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ApiLog_energyRoute: ApiLog_energyRoute,
+  ApiEnergyRoute: ApiEnergyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
