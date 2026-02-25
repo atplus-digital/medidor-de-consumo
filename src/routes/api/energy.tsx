@@ -50,13 +50,18 @@ export const Route = createFileRoute("/api/energy")({
 					const raw: RawEnergyData = Object.fromEntries(searchParams.entries());
 					const parsed = energyLogSchema.parse(adaptEnergyData(raw));
 
-					await db.insert(energyLogTable).values(parsed);
+					const data = {
+						...parsed,
+						rawData: raw,
+					};
+
+					await db.insert(energyLogTable).values(data);
 
 					return new Response(
 						JSON.stringify({
 							status: "success",
 							message: "Energy log saved successfully",
-							data: parsed,
+							data: data,
 						}),
 						{ status: 201 },
 					);
@@ -80,13 +85,18 @@ async function postLogEnergy({ request }: { request: Request }) {
 		const energyLog = await request.json();
 		const parsed = energyLogSchema.parse(energyLog);
 
-		await db.insert(energyLogTable).values(parsed);
+		const data = {
+			...parsed,
+			rawData: energyLog,
+		};
+
+		await db.insert(energyLogTable).values(data);
 
 		return new Response(
 			JSON.stringify({
 				status: "success",
 				message: "Energy log saved successfully",
-				data: parsed,
+				data: data,
 			}),
 			{ status: 201 },
 		);
