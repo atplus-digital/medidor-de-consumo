@@ -1,0 +1,134 @@
+{
+  "id": "85e52e48-a14a-471a-b7c2-86e5115a0bf4",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.energy_log": {
+      "name": "energy_log",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "energy_log_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "meter_id": {
+          "name": "meter_id",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "active_power": {
+          "name": "active_power",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reactive_power": {
+          "name": "reactive_power",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "apparent_power": {
+          "name": "apparent_power",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "voltage": {
+          "name": "voltage",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "current": {
+          "name": "current",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "power_factor": {
+          "name": "power_factor",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "phase_angle": {
+          "name": "phase_angle",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "frequency": {
+          "name": "frequency",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "consumed_energy": {
+          "name": "consumed_energy",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "generated_energy": {
+          "name": "generated_energy",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "operation_time": {
+          "name": "operation_time",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "raw_data": {
+          "name": "raw_data",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
