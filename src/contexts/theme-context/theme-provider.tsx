@@ -54,12 +54,19 @@ export function ThemeProvider({
 		root.classList.add(theme);
 	}, [theme]);
 
+	const toggleTheme = () => {
+		const newTheme: Theme = theme === "light" ? "dark" : "light";
+		setStoredTheme(newTheme);
+		setTheme(newTheme);
+	};
+
 	const value = {
 		theme,
 		setTheme: (theme: Theme) => {
 			setStoredTheme(theme);
 			setTheme(theme);
 		},
+		toggleTheme,
 	};
 
 	return (

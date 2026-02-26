@@ -17,7 +17,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 		<div className="min-h-screen bg-background text-foreground">
 			{/* Top Navigation */}
 			<header className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur-sm">
-				<div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-4">
+				<div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-4 w-full">
 					<Link to="/" className="flex items-center gap-2 font-bold text-lg">
 						<Zap className="size-5 text-yellow-500" />
 						<span className="hidden sm:inline">Medidor de Consumo</span>
@@ -47,7 +47,9 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 							);
 						})}
 					</nav>
-					<ModeToggle />
+					<div className="ml-auto">
+						<ModeToggle />
+					</div>
 				</div>
 			</header>
 

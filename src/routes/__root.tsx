@@ -7,12 +7,12 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { AppLayout } from "@/components/layout/app-layout";
+import { EnergyFiltersProvider } from "@/contexts/energy-filters-context/energy-filters-context";
 import { ThemeProvider } from "@/contexts/theme-context/theme-provider";
-import { AppLayout } from "../components/layout/app-layout";
-import { EnergyFiltersProvider } from "../contexts/energy-filters-context/energy-filters-context";
-import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
-import TanStackQueryProvider from "../integrations/tanstack-query/root-provider";
-import appCss from "../styles.css?url";
+import TanStackQueryDevtools from "@/integrations/tanstack-query/devtools";
+import TanStackQueryProvider from "@/integrations/tanstack-query/root-provider";
+import appCss from "@/styles.css?url";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
@@ -45,7 +45,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootLayout() {
 	return (
-		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+		<ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
 			<EnergyFiltersProvider>
 				<AppLayout>
 					<Outlet />

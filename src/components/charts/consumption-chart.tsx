@@ -4,15 +4,20 @@ import {
 	Bar,
 	BarChart,
 	CartesianGrid,
-	Legend,
 	Line,
 	LineChart,
-	ResponsiveContainer,
-	Tooltip,
 	XAxis,
 	YAxis,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import {
+	type ChartConfig,
+	ChartContainer,
+	ChartLegend,
+	ChartLegendContent,
+	ChartTooltip,
+	ChartTooltipContent,
+} from "../ui/chart";
 import { Skeleton } from "../ui/skeleton";
 
 type ChartType = "area" | "bar" | "line";
@@ -40,6 +45,19 @@ function ConsumptionChart({
 	isLoading,
 	height = 350,
 }: ConsumptionChartProps) {
+	// Create chart configuration from dataKeys
+	const chartConfig = dataKeys.reduce(
+		(acc, dk) => ({
+			// biome-ignore lint/performance/noAccumulatingSpread: This is a common pattern for building config objects from arrays.
+			...acc,
+			[dk.key]: {
+				label: dk.label,
+				color: dk.color,
+			},
+		}),
+		{} as ChartConfig,
+	);
+
 	if (isLoading) {
 		return (
 			<Card>
@@ -73,58 +91,25 @@ function ConsumptionChart({
 		);
 	}
 
-	const commonXAxis = (
-		<XAxis
-			dataKey={xAxisKey}
-			tick={{ fontSize: 12 }}
-			tickLine={false}
-			axisLine={false}
-		/>
-	);
-
-	const commonYAxis = (
-		<YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
-	);
-
-	const commonGrid = (
-		<CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-	);
-
-	const commonTooltip = (
-		<Tooltip
-			contentStyle={{
-				backgroundColor: "hsl(var(--card))",
-				border: "1px solid hsl(var(--border))",
-				borderRadius: "8px",
-				fontSize: "12px",
-				color: "hsl(var(--foreground))",
-			}}
-			labelStyle={{ color: "hsl(var(--foreground))" }}
-		/>
-	);
-
-	const commonLegend = <Legend wrapperStyle={{ fontSize: "12px" }} />;
-
 	const renderChart = () => {
-		const margin = { top: 5, right: 20, left: 10, bottom: 5 };
+		const margin = { top: 5, right: 20, left: 0, bottom: 0 };
 
 		switch (type) {
 			case "area":
 				return (
 					<AreaChart data={data} margin={margin}>
-						{commonGrid}
-						{commonXAxis}
-						{commonYAxis}
-						{commonTooltip}
-						{commonLegend}
+						<CartesianGrid strokeDasharray="3 3" />
+						<XAxis dataKey={xAxisKey} />
+						<YAxis />
+						<ChartTooltip content={<ChartTooltipContent />} />
+						<ChartLegend content={<ChartLegendContent />} />
 						{dataKeys.map(dk => (
 							<Area
 								key={dk.key}
 								type="monotone"
 								dataKey={dk.key}
-								name={dk.label}
-								stroke={dk.color}
-								fill={dk.color}
+								fill={`hsl(var(--chart-${dk.key}))`}
+								stroke={`hsl(var(--chart-${dk.key}))`}
 								fillOpacity={0.2}
 								strokeWidth={2}
 							/>
@@ -134,17 +119,16 @@ function ConsumptionChart({
 			case "bar":
 				return (
 					<BarChart data={data} margin={margin}>
-						{commonGrid}
-						{commonXAxis}
-						{commonYAxis}
-						{commonTooltip}
-						{commonLegend}
+						<CartesianGrid strokeDasharray="3 3" />
+						<XAxis dataKey={xAxisKey} />
+						<YAxis />
+						<ChartTooltip content={<ChartTooltipContent />} />
+						<ChartLegend content={<ChartLegendContent />} />
 						{dataKeys.map(dk => (
 							<Bar
 								key={dk.key}
 								dataKey={dk.key}
-								name={dk.label}
-								fill={dk.color}
+								fill={`hsl(var(--chart-${dk.key}))`}
 								radius={[4, 4, 0, 0]}
 							/>
 						))}
@@ -153,18 +137,17 @@ function ConsumptionChart({
 			case "line":
 				return (
 					<LineChart data={data} margin={margin}>
-						{commonGrid}
-						{commonXAxis}
-						{commonYAxis}
-						{commonTooltip}
-						{commonLegend}
+						<CartesianGrid strokeDasharray="3 3" />
+						<XAxis dataKey={xAxisKey} />
+						<YAxis />
+						<ChartTooltip content={<ChartTooltipContent />} />
+						<ChartLegend content={<ChartLegendContent />} />
 						{dataKeys.map(dk => (
 							<Line
 								key={dk.key}
 								type="monotone"
 								dataKey={dk.key}
-								name={dk.label}
-								stroke={dk.color}
+								stroke={`hsl(var(--chart-${dk.key}))`}
 								strokeWidth={2}
 								dot={{ r: 3 }}
 								activeDot={{ r: 5 }}
@@ -181,9 +164,21 @@ function ConsumptionChart({
 				<CardTitle>{title}</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<ResponsiveContainer width="100%" height={height}>
+				<style>
+					{dataKeys
+						.map(
+							dk =>
+								`[data-chart] [data-stroke="${dk.key}"] { --chart-${dk.key}: ${dk.color}; } [data-chart] [data-fill="${dk.key}"] { --chart-${dk.key}: ${dk.color}; }`,
+						)
+						.join("\n")}
+				</style>
+				<ChartContainer
+					config={chartConfig}
+					className="w-full"
+					style={{ height }}
+				>
 					{renderChart()}
-				</ResponsiveContainer>
+				</ChartContainer>
 			</CardContent>
 		</Card>
 	);
