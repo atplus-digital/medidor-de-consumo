@@ -1,4 +1,4 @@
-POST http://localhost:3000/api/energy HTTP/1.1
+POST http://dev-medidor-de-consumo.kzwirq.easypanel.host:80/api/energy HTTP/1.1
 Content-Type: application/json
 
 {
