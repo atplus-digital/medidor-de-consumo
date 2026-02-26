@@ -3,10 +3,13 @@ import type { QueryClient } from "@tanstack/react-query";
 import {
 	createRootRouteWithContext,
 	HeadContent,
+	Outlet,
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-
+import { ThemeProvider } from "@/contexts/theme-context/theme-provider";
+import { AppLayout } from "../components/layout/app-layout";
+import { EnergyFiltersProvider } from "../contexts/energy-filters-context/energy-filters-context";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import TanStackQueryProvider from "../integrations/tanstack-query/root-provider";
 import appCss from "../styles.css?url";
@@ -37,11 +40,24 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		],
 	}),
 	shellComponent: RootDocument,
+	component: RootLayout,
 });
+
+function RootLayout() {
+	return (
+		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+			<EnergyFiltersProvider>
+				<AppLayout>
+					<Outlet />
+				</AppLayout>
+			</EnergyFiltersProvider>
+		</ThemeProvider>
+	);
+}
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en">
+		<html lang="pt-BR" className="dark">
 			<head>
 				<HeadContent />
 			</head>

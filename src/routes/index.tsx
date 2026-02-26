@@ -1,16 +1,10 @@
-import { Home } from "@/app/home/home";
-import { db } from "@/db";
-import { energyLogTable } from "@/db/schema";
 import { createFileRoute } from "@tanstack/react-router";
+import { Dashboard } from "@/app/dashboard/dashboard";
 
 export const Route = createFileRoute("/")({
-	component: HomePage,
-	loader: async () => {
-		return await db.select().from(energyLogTable);
-	},
+	component: DashboardPage,
 });
 
-function HomePage() {
-	const energyLogs = Route.useLoaderData();
-	return <Home energyLogs={energyLogs} />;
+function DashboardPage() {
+	return <Dashboard />;
 }
