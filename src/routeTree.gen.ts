@@ -10,9 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as MetersRouteImport } from './routes/meters'
 import { Route as ChartsRouteImport } from './routes/charts'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiMetersRouteImport } from './routes/api/meters'
 import { Route as ApiEnergyRouteImport } from './routes/api/energy'
+import { Route as ApiMetersMeterIdRouteImport } from './routes/api/meters.$meterId'
 import { Route as ApiEnergyStatsRouteImport } from './routes/api/energy/stats'
 import { Route as ApiEnergyMetersRouteImport } from './routes/api/energy/meters'
 import { Route as ApiEnergyLogsRouteImport } from './routes/api/energy/logs'
@@ -22,6 +25,11 @@ import { Route as ApiEnergyConsumptionRouteImport } from './routes/api/energy/co
 const ReportsRoute = ReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MetersRoute = MetersRouteImport.update({
+  id: '/meters',
+  path: '/meters',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChartsRoute = ChartsRouteImport.update({
@@ -34,10 +42,20 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiMetersRoute = ApiMetersRouteImport.update({
+  id: '/api/meters',
+  path: '/api/meters',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiEnergyRoute = ApiEnergyRouteImport.update({
   id: '/api/energy',
   path: '/api/energy',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ApiMetersMeterIdRoute = ApiMetersMeterIdRouteImport.update({
+  id: '/$meterId',
+  path: '/$meterId',
+  getParentRoute: () => ApiMetersRoute,
 } as any)
 const ApiEnergyStatsRoute = ApiEnergyStatsRouteImport.update({
   id: '/stats',
@@ -68,78 +86,98 @@ const ApiEnergyConsumptionRoute = ApiEnergyConsumptionRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/charts': typeof ChartsRoute
+  '/meters': typeof MetersRoute
   '/reports': typeof ReportsRoute
   '/api/energy': typeof ApiEnergyRouteWithChildren
+  '/api/meters': typeof ApiMetersRouteWithChildren
   '/api/energy/consumption': typeof ApiEnergyConsumptionRoute
   '/api/energy/latest': typeof ApiEnergyLatestRoute
   '/api/energy/logs': typeof ApiEnergyLogsRoute
   '/api/energy/meters': typeof ApiEnergyMetersRoute
   '/api/energy/stats': typeof ApiEnergyStatsRoute
+  '/api/meters/$meterId': typeof ApiMetersMeterIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/charts': typeof ChartsRoute
+  '/meters': typeof MetersRoute
   '/reports': typeof ReportsRoute
   '/api/energy': typeof ApiEnergyRouteWithChildren
+  '/api/meters': typeof ApiMetersRouteWithChildren
   '/api/energy/consumption': typeof ApiEnergyConsumptionRoute
   '/api/energy/latest': typeof ApiEnergyLatestRoute
   '/api/energy/logs': typeof ApiEnergyLogsRoute
   '/api/energy/meters': typeof ApiEnergyMetersRoute
   '/api/energy/stats': typeof ApiEnergyStatsRoute
+  '/api/meters/$meterId': typeof ApiMetersMeterIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/charts': typeof ChartsRoute
+  '/meters': typeof MetersRoute
   '/reports': typeof ReportsRoute
   '/api/energy': typeof ApiEnergyRouteWithChildren
+  '/api/meters': typeof ApiMetersRouteWithChildren
   '/api/energy/consumption': typeof ApiEnergyConsumptionRoute
   '/api/energy/latest': typeof ApiEnergyLatestRoute
   '/api/energy/logs': typeof ApiEnergyLogsRoute
   '/api/energy/meters': typeof ApiEnergyMetersRoute
   '/api/energy/stats': typeof ApiEnergyStatsRoute
+  '/api/meters/$meterId': typeof ApiMetersMeterIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/charts'
+    | '/meters'
     | '/reports'
     | '/api/energy'
+    | '/api/meters'
     | '/api/energy/consumption'
     | '/api/energy/latest'
     | '/api/energy/logs'
     | '/api/energy/meters'
     | '/api/energy/stats'
+    | '/api/meters/$meterId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/charts'
+    | '/meters'
     | '/reports'
     | '/api/energy'
+    | '/api/meters'
     | '/api/energy/consumption'
     | '/api/energy/latest'
     | '/api/energy/logs'
     | '/api/energy/meters'
     | '/api/energy/stats'
+    | '/api/meters/$meterId'
   id:
     | '__root__'
     | '/'
     | '/charts'
+    | '/meters'
     | '/reports'
     | '/api/energy'
+    | '/api/meters'
     | '/api/energy/consumption'
     | '/api/energy/latest'
     | '/api/energy/logs'
     | '/api/energy/meters'
     | '/api/energy/stats'
+    | '/api/meters/$meterId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChartsRoute: typeof ChartsRoute
+  MetersRoute: typeof MetersRoute
   ReportsRoute: typeof ReportsRoute
   ApiEnergyRoute: typeof ApiEnergyRouteWithChildren
+  ApiMetersRoute: typeof ApiMetersRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -149,6 +187,13 @@ declare module '@tanstack/react-router' {
       path: '/reports'
       fullPath: '/reports'
       preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meters': {
+      id: '/meters'
+      path: '/meters'
+      fullPath: '/meters'
+      preLoaderRoute: typeof MetersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/charts': {
@@ -165,12 +210,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/meters': {
+      id: '/api/meters'
+      path: '/api/meters'
+      fullPath: '/api/meters'
+      preLoaderRoute: typeof ApiMetersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/energy': {
       id: '/api/energy'
       path: '/api/energy'
       fullPath: '/api/energy'
       preLoaderRoute: typeof ApiEnergyRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/api/meters/$meterId': {
+      id: '/api/meters/$meterId'
+      path: '/$meterId'
+      fullPath: '/api/meters/$meterId'
+      preLoaderRoute: typeof ApiMetersMeterIdRouteImport
+      parentRoute: typeof ApiMetersRoute
     }
     '/api/energy/stats': {
       id: '/api/energy/stats'
@@ -230,11 +289,25 @@ const ApiEnergyRouteWithChildren = ApiEnergyRoute._addFileChildren(
   ApiEnergyRouteChildren,
 )
 
+interface ApiMetersRouteChildren {
+  ApiMetersMeterIdRoute: typeof ApiMetersMeterIdRoute
+}
+
+const ApiMetersRouteChildren: ApiMetersRouteChildren = {
+  ApiMetersMeterIdRoute: ApiMetersMeterIdRoute,
+}
+
+const ApiMetersRouteWithChildren = ApiMetersRoute._addFileChildren(
+  ApiMetersRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChartsRoute: ChartsRoute,
+  MetersRoute: MetersRoute,
   ReportsRoute: ReportsRoute,
   ApiEnergyRoute: ApiEnergyRouteWithChildren,
+  ApiMetersRoute: ApiMetersRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

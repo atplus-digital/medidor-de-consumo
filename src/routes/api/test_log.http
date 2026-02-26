@@ -17,5 +17,3 @@ Content-Type: application/json
 }
 
 ###
-
-GET http://localhost:3000/api/energy?id=123&pa=100.00&qa=50.0&uarms=230.0&sa=111.8&iarms=0.43&pfa=0.89&pga=27.0&freq=50.0&epa_c=0.5&epa_g=2.0&tpsd=60.0 HTTP/1.1
