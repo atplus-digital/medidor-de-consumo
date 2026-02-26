@@ -18,10 +18,11 @@ export function useMeterFormSubmit(
 	const handleSubmit = async (values: UpdateMeter) => {
 		const url = meter ? `/api/meters/${meter.meterId}` : "/api/meters";
 
-		const payloadData: Record<string, string | undefined> = {
+		const payloadData: Record<string, string | number | undefined | boolean> = {
 			meterName: values.meterName?.trim(),
 			meterType: values.meterType?.trim(),
 			location: values.location?.trim(),
+			isInverted: values.isInverted || 0,
 			status: values.status,
 		};
 

@@ -78,7 +78,7 @@ export async function createMeter({ request }: { request: Request }) {
 				location: validatedData.location,
 				status: validatedData.status || "active",
 				prefix: validatedData.prefix,
-				isInverted: validatedData.isInverted ?? 0,
+				isInverted: validatedData.isInverted ?? false,
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			})

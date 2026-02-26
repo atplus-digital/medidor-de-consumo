@@ -24,7 +24,7 @@ export function MeterCard({ meter }: { meter: Meter }) {
 				<div className="flex-1 flex items-center justify-between">
 					<CardTitle className="text-lg">{meter.meterName}</CardTitle>
 					<div className="flex gap-2">
-						{meter.isInverted === 1 && (
+						{meter.isInverted && (
 							<Badge
 								variant="outline"
 								className="text-orange-600 border-orange-600"

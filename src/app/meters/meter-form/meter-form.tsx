@@ -47,7 +47,7 @@ export function MeterForm({ meter, onSuccess, onCancel }: MeterFormProps) {
 			status:
 				(meter?.status as "active" | "inactive" | "maintenance") ?? "active",
 			prefix: meter?.prefix ?? "",
-			isInverted: meter?.isInverted ?? 0,
+			isInverted: meter?.isInverted ?? false,
 		},
 	});
 
@@ -132,22 +132,23 @@ export function MeterForm({ meter, onSuccess, onCancel }: MeterFormProps) {
 						name="isInverted"
 						render={({ field }) => (
 							<FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-								<div className="space-y-0.5">
-									<FormLabel className="text-base">
-										{FORM_LABELS.isInverted}
-									</FormLabel>
-									<FormDescription>
-										{FORM_DESCRIPTIONS.isInverted}
-									</FormDescription>
+								<div>
+									<div className="space-y-0.5">
+										<FormLabel className="text-base">
+											{FORM_LABELS.isInverted}
+										</FormLabel>
+										<FormDescription>
+											{FORM_DESCRIPTIONS.isInverted}
+										</FormDescription>
+									</div>
+									<FormControl>
+										<Switch
+											checked={field.value}
+											onCheckedChange={field.onChange}
+										/>
+									</FormControl>
 								</div>
-								<FormControl>
-									<Switch
-										checked={field.value === 1}
-										onCheckedChange={(checked: boolean) =>
-											field.onChange(checked ? 1 : 0)
-										}
-									/>
-								</FormControl>
+								<FormMessage />
 							</FormItem>
 						)}
 					/>

@@ -6,6 +6,7 @@ import {
 	pgTable,
 	timestamp,
 	varchar,
+	boolean,
 } from "drizzle-orm/pg-core";
 import {
 	createInsertSchema,
@@ -26,7 +27,7 @@ export const metersTable = pgTable("meters", {
 	prefix: varchar("prefix", { length: 50 }),
 
 	// Configuration
-	isInverted: integer("is_inverted").notNull().default(0), // 0 = normal, 1 = inverted
+	isInverted: boolean("is_inverted").notNull().default(false), // 0 = normal, 1 = inverted
 
 	// Timestamps
 	createdAt: timestamp("created_at").notNull().defaultNow(),

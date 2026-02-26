@@ -33,7 +33,7 @@ export async function postLogEnergy({
 		}
 
 		const meter = meterResult[0];
-		const isInverted = meter.isInverted === 1;
+		const isInverted = meter.isInverted;
 
 		// Parse and transform data based on meter configuration
 		const data = parseRawEnergyData(raw, isInverted);
