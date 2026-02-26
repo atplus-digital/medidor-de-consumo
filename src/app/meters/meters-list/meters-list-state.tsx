@@ -1,15 +1,29 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { CircleGauge } from "lucide-react";
 
-type ErrorStateProps = {
-	onRetry: () => void;
-};
+import {
+	Empty,
+	EmptyContent,
+	EmptyDescription,
+	EmptyHeader,
+	EmptyMedia,
+	EmptyTitle,
+} from "@/components/ui/empty";
+import { MeterFormDialog } from "../meter-form/meter-form-dialog";
 
 export function LoadingState() {
-	return <div className="text-center py-8">Carregando medidores...</div>;
+	return (
+		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+			<Skeleton className="h-48 w-full" />
+			<Skeleton className="h-48 w-full" />
+			<Skeleton className="h-48 w-full" />
+		</div>
+	);
 }
 
-export function ErrorState({ onRetry }: ErrorStateProps) {
+export function ErrorState({ onRetry }: { onRetry: () => void }) {
 	return (
 		<Card>
 			<CardContent className="pt-6">
@@ -31,10 +45,19 @@ export function ErrorState({ onRetry }: ErrorStateProps) {
 
 export function EmptyState() {
 	return (
-		<Card>
-			<CardContent className="pt-6 text-center text-muted-foreground">
-				Nenhum medidor encontrado. Crie seu primeiro medidor para começar.
-			</CardContent>
-		</Card>
+		<Empty className="bg-muted/30 h-full">
+			<EmptyHeader>
+				<EmptyMedia variant="icon">
+					<CircleGauge className="h-6 w-6" />
+				</EmptyMedia>
+				<EmptyTitle>Nenhum medidor encontrado</EmptyTitle>
+				<EmptyDescription className="max-w-xs text-pretty">
+					Crie seu primeiro medidor para começar.
+				</EmptyDescription>
+			</EmptyHeader>
+			<EmptyContent>
+				<MeterFormDialog />
+			</EmptyContent>
+		</Empty>
 	);
 }

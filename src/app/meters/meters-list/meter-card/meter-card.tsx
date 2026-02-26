@@ -15,11 +15,7 @@ import { DeleteMeterButton } from "./delete-meter-button";
 import { MeterFormDialog } from "../../meter-form/meter-form-dialog";
 import type { Meter } from "@/db/schema";
 
-export interface MeterCardProps {
-	meter: Meter;
-}
-
-export function MeterCard({ meter }: MeterCardProps) {
+export function MeterCard({ meter }: { meter: Meter }) {
 	const { copiedMeterID, handleCopyMeterID } = useCopyMeterID();
 
 	return (
@@ -35,27 +31,21 @@ export function MeterCard({ meter }: MeterCardProps) {
 			</CardHeader>
 			<Separator />
 			<CardContent className="gap-4 grid py-2 px-4">
-				<div className="space-y-2">
-					<div className="grid grid-cols-1 gap-3 text-sm">
-						<div>
-							<div className="flex items-center gap-2">
-								<Input disabled value={`ID ${meter.meterId}`} />
-								<Button
-									size="sm"
-									variant="outline"
-									onClick={() => handleCopyMeterID(meter.meterId)}
-									className="h-auto p-2"
-									title="Copiar ID do Medidor"
-								>
-									{copiedMeterID ? (
-										<Check className="w-4 h-4 text-green-600" />
-									) : (
-										<Copy className="w-4 h-4" />
-									)}
-								</Button>
-							</div>
-						</div>
-					</div>
+				<div className="flex items-center gap-2">
+					<Input disabled value={meter.meterId} />
+					<Button
+						size="sm"
+						variant="outline"
+						onClick={() => handleCopyMeterID(meter.meterId)}
+						className="h-auto p-2"
+						title="Copiar ID do Medidor"
+					>
+						{copiedMeterID ? (
+							<Check className="w-4 h-4 text-green-600" />
+						) : (
+							<Copy className="w-4 h-4" />
+						)}
+					</Button>
 				</div>
 
 				<div className="grid grid-cols-2 gap-2">
