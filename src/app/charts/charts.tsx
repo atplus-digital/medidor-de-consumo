@@ -71,7 +71,7 @@ function Charts() {
 					onEndDateChange={setEndDate}
 				/>
 				<MeterSelect
-					meterIds={meterIds}
+					meters={meterIds}
 					value={filters.meterId}
 					onChange={setMeterId}
 				/>

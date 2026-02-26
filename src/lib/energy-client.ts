@@ -87,8 +87,12 @@ export async function getConsumptionByPeriod(
 	return data.data;
 }
 
-export async function getMeterIds(): Promise<string[]> {
+export async function getMeterIds(): Promise<
+	Array<{ id: string; meterName: string }>
+> {
 	const response = await fetch("/api/energy/meters");
-	const data = (await response.json()) as { data: string[] };
+	const data = (await response.json()) as {
+		data: Array<{ id: string; meterName: string }>;
+	};
 	return data.data;
 }

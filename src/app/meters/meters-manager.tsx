@@ -6,13 +6,11 @@ export function MetersManager() {
 		<div className="space-y-6">
 			<div>
 				<div className="flex items-center justify-between">
-					<h1 className="text-3xl font-bold tracking-tight">
-						Meter Management
-					</h1>
+					<h1 className="text-3xl font-bold tracking-tight">Medidores</h1>
 					<NewMeter />
 				</div>
 				<p className="text-muted-foreground mt-2">
-					Create, edit, and manage your energy meters
+					Gerencie seus medidores de consumo de energia aqui.
 				</p>
 			</div>
 			<MetersList />

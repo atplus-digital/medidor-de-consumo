@@ -21,6 +21,7 @@ export function generateMeterId(prefix?: string): string {
  * Validation schema for creating a new meter
  */
 export const createMeterSchema = z.object({
+	meterName: z.string().min(1, "Meter name is required"),
 	meterType: z.string().min(1, "Meter type is required"),
 	location: z.string().min(1, "Location is required"),
 	prefix: z.string().optional(),
@@ -31,6 +32,7 @@ export const createMeterSchema = z.object({
  * Validation schema for updating a meter
  */
 export const updateMeterSchema = z.object({
+	meterName: z.string().min(1, "Meter name is required").optional(),
 	meterType: z.string().min(1, "Meter type is required").optional(),
 	location: z.string().min(1, "Location is required").optional(),
 	status: z.enum(["active", "inactive", "maintenance"]).optional(),

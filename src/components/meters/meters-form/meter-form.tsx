@@ -42,6 +42,7 @@ export function MeterForm({ meter, onSuccess, onCancel }: MeterFormProps) {
 	const form = useForm<MeterFormValues>({
 		resolver: zodResolver(meterSchema),
 		defaultValues: {
+			meterName: meter?.meterName ?? "",
 			meterType: meter?.meterType ?? "",
 			location: meter?.location ?? "",
 			status:
@@ -52,6 +53,7 @@ export function MeterForm({ meter, onSuccess, onCancel }: MeterFormProps) {
 
 	useEffect(() => {
 		form.reset({
+			meterName: meter?.meterName ?? "",
 			meterType: meter?.meterType ?? "",
 			location: meter?.location ?? "",
 			status:
@@ -78,6 +80,23 @@ export function MeterForm({ meter, onSuccess, onCancel }: MeterFormProps) {
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 						<div className="grid grid-cols-1 gap-4">
+							<FormField
+								control={form.control}
+								name="meterName"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>{FORM_LABELS.meterName}</FormLabel>
+										<FormControl>
+											<Input
+												placeholder={FORM_PLACEHOLDERS.meterName}
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
 							<FormField
 								control={form.control}
 								name="meterType"

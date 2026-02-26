@@ -21,11 +21,10 @@ function AppHeader() {
 	const currentPath = routerState.location.pathname;
 
 	return (
-		<header className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur-sm">
+		<header className="sticky top-0 z-50 border-b bg-card/60 backdrop-blur-sm shadow-sm">
 			<div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-4 w-full">
 				<Link to="/" className="flex items-center gap-2 font-bold text-lg">
-					<Zap className="size-5 text-yellow-500" />
-					<span className="hidden sm:inline">Medidor de Consumo</span>
+					<Zap className="size-5 text-primary" />
 				</Link>
 
 				<nav className="flex items-center gap-1">

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const meterSchema = z.object({
+	meterName: z.string().trim().min(1, "Meter name is required"),
 	meterType: z.string().trim().min(1, "Meter type is required"),
 	location: z.string().trim().min(1, "Location is required"),
 	status: z.enum(["active", "inactive", "maintenance"]),

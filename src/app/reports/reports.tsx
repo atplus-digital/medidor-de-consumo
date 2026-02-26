@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Activity, Hash, TrendingUp, Zap } from "lucide-react";
 import { useState } from "react";
-import { StatCard } from "@/components/dashboard/stat-card";
+import { StatCard } from "@/app/dashboard/components/stat-card";
 import { EnergyTable } from "@/components/data-table/energy-table";
 import { ExportButtons } from "@/components/export/export-buttons";
 import { DateRangePicker } from "@/components/filters/date-range-picker";
@@ -91,7 +91,7 @@ function Reports() {
 					}}
 				/>
 				<MeterSelect
-					meterIds={meterIds}
+					meters={meterIds}
 					value={filters.meterId}
 					onChange={id => {
 						setMeterId(id);

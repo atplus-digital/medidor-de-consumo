@@ -1,5 +1,6 @@
 CREATE TABLE "meters" (
 	"meter_id" varchar(100) PRIMARY KEY NOT NULL,
+	"meter_name" varchar(255) NOT NULL,
 	"meter_type" varchar(50) NOT NULL,
 	"location" varchar(255) NOT NULL,
 	"status" varchar(50) DEFAULT 'active' NOT NULL,

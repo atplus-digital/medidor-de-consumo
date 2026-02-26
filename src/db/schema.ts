@@ -14,6 +14,7 @@ export const metersTable = pgTable("meters", {
 	meterId: varchar("meter_id", { length: 100 }).primaryKey(),
 
 	// Information
+	meterName: varchar("meter_name", { length: 255 }).notNull(),
 	meterType: varchar("meter_type", { length: 50 }).notNull(),
 	location: varchar("location", { length: 255 }).notNull(),
 	status: varchar("status", { length: 50 }).notNull().default("active"),

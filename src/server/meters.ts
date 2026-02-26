@@ -75,6 +75,7 @@ export async function createMeter({ request }: { request: Request }) {
 			.insert(metersTable)
 			.values({
 				meterId,
+				meterName: validatedData.meterName,
 				meterType: validatedData.meterType,
 				location: validatedData.location,
 				status: validatedData.status || "active",
@@ -128,6 +129,7 @@ export async function updateMeter({
 		const updatedMeter = await db
 			.update(metersTable)
 			.set({
+				...(validatedData.meterName && { meterName: validatedData.meterName }),
 				...(validatedData.meterType && { meterType: validatedData.meterType }),
 				...(validatedData.location && { location: validatedData.location }),
 				...(validatedData.status && { status: validatedData.status }),

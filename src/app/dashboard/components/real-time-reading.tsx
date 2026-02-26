@@ -1,14 +1,14 @@
 import { Activity, Clock, Gauge, Radio, Waves, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { EnergyLog } from "@/db/schema";
 import { formatNumber, formatRelative } from "@/lib/format";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-
-interface RealTimeReadingProps {
-	reading: EnergyLog | null;
-	isLoading?: boolean;
-}
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from "../../../components/ui/card";
+import { useDashboard } from "@/app/dashboard/context/dashboard-context";
 
 function ReadingItem({
 	icon: Icon,
@@ -36,8 +36,10 @@ function ReadingItem({
 	);
 }
 
-function RealTimeReading({ reading, isLoading }: RealTimeReadingProps) {
-	if (isLoading) {
+function RealTimeReading() {
+	const { latestReading, isLoadingReading } = useDashboard();
+
+	if (isLoadingReading) {
 		return (
 			<Card>
 				<CardHeader>
@@ -61,7 +63,7 @@ function RealTimeReading({ reading, isLoading }: RealTimeReadingProps) {
 		);
 	}
 
-	if (!reading) {
+	if (!latestReading) {
 		return (
 			<Card>
 				<CardContent className="flex items-center justify-center py-12">
@@ -79,10 +81,10 @@ function RealTimeReading({ reading, isLoading }: RealTimeReadingProps) {
 					Leitura em Tempo Real
 				</CardTitle>
 				<div className="flex items-center gap-2">
-					<Badge variant="outline">Medidor: {reading.meterId}</Badge>
-					{reading.createdAt && (
+					<Badge variant="outline">Medidor: {latestReading.meterId}</Badge>
+					{latestReading.createdAt && (
 						<span className="text-xs text-muted-foreground">
-							{formatRelative(reading.createdAt)}
+							{formatRelative(latestReading.createdAt)}
 						</span>
 					)}
 				</div>
@@ -92,49 +94,49 @@ function RealTimeReading({ reading, isLoading }: RealTimeReadingProps) {
 					<ReadingItem
 						icon={Zap}
 						label="Potência Ativa"
-						value={formatNumber(reading.activePower)}
+						value={formatNumber(latestReading.activePower)}
 						unit="W"
 					/>
 					<ReadingItem
 						icon={Activity}
 						label="Potência Reativa"
-						value={formatNumber(reading.reactivePower)}
+						value={formatNumber(latestReading.reactivePower)}
 						unit="VAR"
 					/>
 					<ReadingItem
 						icon={Gauge}
 						label="Potência Aparente"
-						value={formatNumber(reading.apparentPower)}
+						value={formatNumber(latestReading.apparentPower)}
 						unit="VA"
 					/>
 					<ReadingItem
 						icon={Zap}
 						label="Tensão"
-						value={formatNumber(reading.voltage, 1)}
+						value={formatNumber(latestReading.voltage, 1)}
 						unit="V"
 					/>
 					<ReadingItem
 						icon={Activity}
 						label="Corrente"
-						value={formatNumber(reading.current, 3)}
+						value={formatNumber(latestReading.current, 3)}
 						unit="A"
 					/>
 					<ReadingItem
 						icon={Gauge}
 						label="Fator de Potência"
-						value={formatNumber(reading.powerFactor, 3)}
+						value={formatNumber(latestReading.powerFactor, 3)}
 						unit=""
 					/>
 					<ReadingItem
 						icon={Waves}
 						label="Frequência"
-						value={formatNumber(reading.frequency, 1)}
+						value={formatNumber(latestReading.frequency, 1)}
 						unit="Hz"
 					/>
 					<ReadingItem
 						icon={Clock}
 						label="Tempo de Operação"
-						value={formatNumber(reading.operationTime, 0)}
+						value={formatNumber(latestReading.operationTime, 0)}
 						unit="s"
 					/>
 				</div>
