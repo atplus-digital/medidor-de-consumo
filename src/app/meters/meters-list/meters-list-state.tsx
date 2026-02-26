@@ -6,7 +6,7 @@ type ErrorStateProps = {
 };
 
 export function LoadingState() {
-	return <div className="text-center py-8">Loading meters...</div>;
+	return <div className="text-center py-8">Carregando medidores...</div>;
 }
 
 export function ErrorState({ onRetry }: ErrorStateProps) {
@@ -14,14 +14,14 @@ export function ErrorState({ onRetry }: ErrorStateProps) {
 		<Card>
 			<CardContent className="pt-6">
 				<div className="text-center text-red-600">
-					<p>Error loading meters</p>
+					<p>Erro ao carregar medidores</p>
 					<Button
 						size="sm"
 						variant="outline"
 						onClick={onRetry}
 						className="mt-2"
 					>
-						Retry
+						Tentar novamente
 					</Button>
 				</div>
 			</CardContent>
@@ -33,7 +33,7 @@ export function EmptyState() {
 	return (
 		<Card>
 			<CardContent className="pt-6 text-center text-muted-foreground">
-				No meters found. Create your first meter to get started.
+				Nenhum medidor encontrado. Crie seu primeiro medidor para começar.
 			</CardContent>
 		</Card>
 	);

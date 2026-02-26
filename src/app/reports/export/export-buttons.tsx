@@ -2,7 +2,7 @@ import { FileDown, FileSpreadsheet } from "lucide-react";
 import { useState } from "react";
 import type { EnergyLog } from "@/db/schema";
 import { exportToCsv, exportToPdf } from "@/lib/export";
-import { Button } from "../ui/button";
+import { Button } from "../../../components/ui/button";
 
 interface ExportButtonsProps {
 	logs: EnergyLog[];

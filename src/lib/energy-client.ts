@@ -1,6 +1,7 @@
+import axios from "axios";
 import type { EnergyLog } from "@/db/schema";
 
-interface EnergyStats {
+export interface EnergyStats {
 	totalConsumed?: number;
 	totalGenerated?: number;
 	avgActivePower?: number;
@@ -12,7 +13,7 @@ interface EnergyStats {
 	totalReadings?: number;
 }
 
-interface ConsumptionData extends Record<string, unknown> {
+export interface ConsumptionData extends Record<string, unknown> {
 	date: string;
 	totalConsumed: number;
 	totalGenerated: number;
@@ -23,15 +24,18 @@ interface ConsumptionData extends Record<string, unknown> {
 	readings: number;
 }
 
+async function fetchApi<T>(url: string): Promise<T> {
+	const response = await axios.get<{ data: T }>(url);
+	return response.data.data;
+}
+
 export async function getLatestReading(
 	meterId?: string,
 ): Promise<EnergyLog | null> {
 	const params = new URLSearchParams();
 	if (meterId) params.append("meterId", meterId);
 
-	const response = await fetch(`/api/energy/latest?${params}`);
-	const data = (await response.json()) as { data: EnergyLog | null };
-	return data.data;
+	return fetchApi<EnergyLog | null>(`/api/energy/latest?${params}`);
 }
 
 export async function getEnergyLogs(
@@ -48,11 +52,9 @@ export async function getEnergyLogs(
 	params.append("limit", String(limit));
 	params.append("offset", String(offset));
 
-	const response = await fetch(`/api/energy/logs?${params}`);
-	const data = (await response.json()) as {
-		data: { logs: EnergyLog[]; total: number };
-	};
-	return data.data;
+	return fetchApi<{ logs: EnergyLog[]; total: number }>(
+		`/api/energy/logs?${params}`,
+	);
 }
 
 export async function getEnergyStats(
@@ -65,9 +67,7 @@ export async function getEnergyStats(
 	if (endDate) params.append("endDate", endDate);
 	if (meterId) params.append("meterId", meterId);
 
-	const response = await fetch(`/api/energy/stats?${params}`);
-	const data = (await response.json()) as { data: EnergyStats };
-	return data.data;
+	return fetchApi<EnergyStats>(`/api/energy/stats?${params}`);
 }
 
 export async function getConsumptionByPeriod(
@@ -82,17 +82,13 @@ export async function getConsumptionByPeriod(
 	if (endDate) params.append("endDate", endDate);
 	if (meterId) params.append("meterId", meterId);
 
-	const response = await fetch(`/api/energy/consumption?${params}`);
-	const data = (await response.json()) as { data: ConsumptionData[] };
-	return data.data;
+	return fetchApi<ConsumptionData[]>(`/api/energy/consumption?${params}`);
 }
 
 export async function getMeterIds(): Promise<
 	Array<{ id: string; meterName: string }>
 > {
-	const response = await fetch("/api/energy/meters");
-	const data = (await response.json()) as {
-		data: Array<{ id: string; meterName: string }>;
-	};
-	return data.data;
+	return fetchApi<Array<{ id: string; meterName: string }>>(
+		"/api/energy/meters",
+	);
 }

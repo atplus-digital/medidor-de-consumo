@@ -7,7 +7,7 @@ export function useCopyMeterID() {
 		try {
 			await navigator.clipboard.writeText(meterId);
 			setCopiedMeterID(true);
-			setTimeout(() => setCopiedMeterID(false), 2000);
+			setTimeout(() => setCopiedMeterID(false), 1000);
 		} catch (err) {
 			console.error("Failed to copy meter ID:", err);
 		}

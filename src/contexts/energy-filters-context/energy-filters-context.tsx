@@ -16,18 +16,20 @@ interface EnergyFiltersContextType {
 	resetFilters: () => void;
 }
 
-const defaultFilters: EnergyFilters = {
-	startDate: subDays(new Date(), 30),
-	endDate: new Date(),
-	meterId: undefined,
-};
+function getDefaultFilters(): EnergyFilters {
+	return {
+		startDate: subDays(new Date(), 30),
+		endDate: new Date(),
+		meterId: undefined,
+	};
+}
 
 const EnergyFiltersContext = createContext<EnergyFiltersContextType | null>(
 	null,
 );
 
 function EnergyFiltersProvider({ children }: { children: ReactNode }) {
-	const [filters, setFilters] = useState<EnergyFilters>(defaultFilters);
+	const [filters, setFilters] = useState<EnergyFilters>(getDefaultFilters);
 
 	const setStartDate = (date: Date | undefined) =>
 		setFilters(prev => ({ ...prev, startDate: date }));
@@ -41,7 +43,7 @@ function EnergyFiltersProvider({ children }: { children: ReactNode }) {
 	const setDateRange = (start: Date | undefined, end: Date | undefined) =>
 		setFilters(prev => ({ ...prev, startDate: start, endDate: end }));
 
-	const resetFilters = () => setFilters(defaultFilters);
+	const resetFilters = () => setFilters(getDefaultFilters());
 
 	return (
 		<EnergyFiltersContext

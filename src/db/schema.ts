@@ -7,7 +7,12 @@ import {
 	timestamp,
 	varchar,
 } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
+import {
+	createInsertSchema,
+	createSelectSchema,
+	createUpdateSchema,
+} from "drizzle-zod";
+import type z from "zod";
 
 export const metersTable = pgTable("meters", {
 	// Identification
@@ -26,10 +31,12 @@ export const metersTable = pgTable("meters", {
 });
 
 // Meters schemas
-export const metersSchema = createInsertSchema(metersTable);
-export const metersSelectSchema = createInsertSchema(metersTable);
+export const metersSchema = createSelectSchema(metersTable);
+export const metersInsertSchema = createInsertSchema(metersTable);
+export const metersUpdateSchema = createUpdateSchema(metersTable);
 export type Meter = typeof metersTable.$inferSelect;
 export type NewMeter = typeof metersTable.$inferInsert;
+export type UpdateMeter = z.infer<typeof metersUpdateSchema>;
 
 export const energyLogTable = pgTable(
 	"energy_log",
@@ -74,5 +81,6 @@ export const energyLogTable = pgTable(
 
 // Energy logs schemas
 export const energyLogSchema = createInsertSchema(energyLogTable);
+export const energyLogUpdateSchema = createUpdateSchema(energyLogTable);
 export type EnergyLog = typeof energyLogTable.$inferSelect;
 export type NewEnergyLog = typeof energyLogTable.$inferInsert;

@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { subDays } from "date-fns";
 import type { EnergyLog } from "@/db/schema";
 import {
+	type ConsumptionData,
+	type EnergyStats,
 	getConsumptionByPeriod,
 	getLatestReading,
 	getMeterIds,
@@ -21,11 +23,11 @@ interface DashboardContextType {
 	refetchReading: () => void;
 
 	// Daily Consumption
-	dailyData: Array<any>;
+	dailyData: ConsumptionData[];
 	isLoadingChart: boolean;
 
 	// Stats
-	stats: any;
+	stats: EnergyStats | undefined;
 	isLoadingStats: boolean;
 }
 

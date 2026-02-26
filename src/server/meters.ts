@@ -1,12 +1,8 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { energyLogTable, metersTable } from "@/db/schema";
+import { energyLogTable, metersTable, metersInsertSchema } from "@/db/schema";
 import { jsonResponse } from "@/lib/http";
-import {
-	createMeterSchema,
-	generateMeterId,
-	updateMeterSchema,
-} from "@/lib/meters";
+import { generateMeterId } from "@/lib/meters";
 
 /**
  * GET /api/meters - Get all meters
@@ -53,11 +49,13 @@ export async function createMeter({ request }: { request: Request }) {
 	try {
 		const body = await request.json();
 
-		// Validate input
-		const validatedData = createMeterSchema.parse(body);
+		// Validate input - omit auto-generated fields
+		const validatedData = metersInsertSchema
+			.omit({ meterId: true, createdAt: true, updatedAt: true })
+			.parse(body);
 
 		// Generate unique meter ID
-		const meterId = generateMeterId(validatedData.prefix);
+		const meterId = generateMeterId(validatedData.prefix || undefined);
 
 		// Check if meter ID already exists
 		const existingMeter = await db
@@ -87,13 +85,14 @@ export async function createMeter({ request }: { request: Request }) {
 
 		return jsonResponse.success(newMeter[0], "Meter created successfully", 201);
 	} catch (error) {
+		console.error("Error creating meter:", error);
+
 		if (error instanceof SyntaxError) {
 			return jsonResponse.error("Invalid JSON", 400);
 		}
 		if (error instanceof Error && error.message.includes("validation")) {
 			return jsonResponse.error(error.message, 400);
 		}
-		console.error("Error creating meter:", error);
 		return jsonResponse.error("Failed to create meter", 500);
 	}
 }
@@ -112,7 +111,7 @@ export async function updateMeter({
 		const body = await request.json();
 
 		// Validate input
-		const validatedData = updateMeterSchema.parse(body);
+		const validatedData = metersInsertSchema.partial().parse(body);
 
 		// Check if meter exists
 		const existingMeter = await db
@@ -129,10 +128,18 @@ export async function updateMeter({
 		const updatedMeter = await db
 			.update(metersTable)
 			.set({
-				...(validatedData.meterName && { meterName: validatedData.meterName }),
-				...(validatedData.meterType && { meterType: validatedData.meterType }),
-				...(validatedData.location && { location: validatedData.location }),
-				...(validatedData.status && { status: validatedData.status }),
+				...(validatedData.meterName !== undefined && {
+					meterName: validatedData.meterName,
+				}),
+				...(validatedData.meterType !== undefined && {
+					meterType: validatedData.meterType,
+				}),
+				...(validatedData.location !== undefined && {
+					location: validatedData.location,
+				}),
+				...(validatedData.status !== undefined && {
+					status: validatedData.status,
+				}),
 				updatedAt: new Date(),
 			})
 			.where(eq(metersTable.meterId, meterId))

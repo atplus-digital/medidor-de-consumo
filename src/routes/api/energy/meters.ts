@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { energyLogTable, metersTable } from "@/db/schema";
 import { jsonResponse } from "@/lib/http";
@@ -16,9 +17,7 @@ export const Route = createFileRoute("/api/energy/meters")({
 						.from(energyLogTable)
 						.innerJoin(
 							metersTable,
-							(energy, meter) =>
-								energy[energyLogTable.meterId.name as never] ===
-								meter[metersTable.meterId.name as never],
+							eq(energyLogTable.meterId, metersTable.meterId),
 						);
 
 					return jsonResponse.success(result);

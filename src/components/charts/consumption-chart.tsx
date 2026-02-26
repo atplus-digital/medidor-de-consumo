@@ -108,8 +108,8 @@ function ConsumptionChart({
 								key={dk.key}
 								type="monotone"
 								dataKey={dk.key}
-								fill={`hsl(var(--chart-${dk.key}))`}
-								stroke={`hsl(var(--chart-${dk.key}))`}
+								fill={`var(--color-${dk.key})`}
+								stroke={`var(--color-${dk.key})`}
 								fillOpacity={0.2}
 								strokeWidth={2}
 							/>
@@ -128,7 +128,7 @@ function ConsumptionChart({
 							<Bar
 								key={dk.key}
 								dataKey={dk.key}
-								fill={`hsl(var(--chart-${dk.key}))`}
+								fill={`var(--color-${dk.key})`}
 								radius={[4, 4, 0, 0]}
 							/>
 						))}
@@ -147,7 +147,7 @@ function ConsumptionChart({
 								key={dk.key}
 								type="monotone"
 								dataKey={dk.key}
-								stroke={`hsl(var(--chart-${dk.key}))`}
+								stroke={`var(--color-${dk.key})`}
 								strokeWidth={2}
 								dot={{ r: 3 }}
 								activeDot={{ r: 5 }}
@@ -164,14 +164,6 @@ function ConsumptionChart({
 				<CardTitle>{title}</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<style>
-					{dataKeys
-						.map(
-							dk =>
-								`[data-chart] [data-stroke="${dk.key}"] { --chart-${dk.key}: ${dk.color}; } [data-chart] [data-fill="${dk.key}"] { --chart-${dk.key}: ${dk.color}; }`,
-						)
-						.join("\n")}
-				</style>
 				<ChartContainer
 					config={chartConfig}
 					className="w-full"

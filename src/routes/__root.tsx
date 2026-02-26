@@ -10,7 +10,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import TanStackQueryDevtools from "@/integrations/tanstack-query/devtools";
 import TanStackQueryProvider from "@/integrations/tanstack-query/root-provider";
 import appCss from "@/styles.css?url";
-import { RootLayout } from "@/components/layout/root-layout";
+import { RootContext } from "@/contexts/root-context";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
@@ -38,7 +38,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		],
 	}),
 	shellComponent: RootDocument,
-	component: RootLayout,
+	component: RootContext,
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {

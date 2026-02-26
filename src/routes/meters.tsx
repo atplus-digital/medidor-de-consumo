@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MetersManager } from "@/app/meters/meters-manager";
+import { Meters } from "@/app/meters/meters";
 
 export const Route = createFileRoute("/meters")({
-	component: MetersManager,
+	component: Meters,
 });
