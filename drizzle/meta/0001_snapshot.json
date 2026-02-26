@@ -1,5 +1,5 @@
 {
-  "id": "8ebf7781-dfe1-468e-a5c0-ba228f0566e5",
+  "id": "1a52dcc1-32b2-4103-93ef-e976d2b3a3ac",
   "prevId": "85e52e48-a14a-471a-b7c2-86e5115a0bf4",
   "version": "7",
   "dialect": "postgresql",
@@ -173,6 +173,13 @@
           "type": "varchar(50)",
           "primaryKey": false,
           "notNull": false
+        },
+        "is_inverted": {
+          "name": "is_inverted",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
         },
         "created_at": {
           "name": "created_at",

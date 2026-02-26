@@ -23,9 +23,21 @@ export function MeterCard({ meter }: { meter: Meter }) {
 			<CardHeader className="pt-0 gap-1">
 				<div className="flex-1 flex items-center justify-between">
 					<CardTitle className="text-lg">{meter.meterName}</CardTitle>
-					<Badge variant={meter.status === "active" ? "default" : "secondary"}>
-						{meter.status}
-					</Badge>
+					<div className="flex gap-2">
+						{meter.isInverted === 1 && (
+							<Badge
+								variant="outline"
+								className="text-orange-600 border-orange-600"
+							>
+								Invertido
+							</Badge>
+						)}
+						<Badge
+							variant={meter.status === "active" ? "default" : "secondary"}
+						>
+							{meter.status}
+						</Badge>
+					</div>
 				</div>
 				<CardDescription>{meter.meterType}</CardDescription>
 			</CardHeader>

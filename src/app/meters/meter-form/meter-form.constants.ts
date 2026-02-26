@@ -19,9 +19,12 @@ export const FORM_LABELS = {
 	location: "Localização *",
 	prefix: "Prefixo (Opcional)",
 	status: "Status",
+	isInverted: "Medidor Invertido",
 };
 
 export const FORM_DESCRIPTIONS = {
 	prefix:
 		"O prefixo será combinado com um hash único para gerar o ID do medidor",
+	isInverted:
+		"Ative se o medidor foi instalado invertido. Isso inverterá o sinal da potência ativa/reativa e trocará consumo com geração.",
 };

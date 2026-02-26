@@ -18,6 +18,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import {
 	STATUS_OPTIONS,
 	STATUS_LABELS,
@@ -46,6 +47,7 @@ export function MeterForm({ meter, onSuccess, onCancel }: MeterFormProps) {
 			status:
 				(meter?.status as "active" | "inactive" | "maintenance") ?? "active",
 			prefix: meter?.prefix ?? "",
+			isInverted: meter?.isInverted ?? 0,
 		},
 	});
 
@@ -124,6 +126,31 @@ export function MeterForm({ meter, onSuccess, onCancel }: MeterFormProps) {
 							)}
 						/>
 					)}
+
+					<FormField
+						control={form.control}
+						name="isInverted"
+						render={({ field }) => (
+							<FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+								<div className="space-y-0.5">
+									<FormLabel className="text-base">
+										{FORM_LABELS.isInverted}
+									</FormLabel>
+									<FormDescription>
+										{FORM_DESCRIPTIONS.isInverted}
+									</FormDescription>
+								</div>
+								<FormControl>
+									<Switch
+										checked={field.value === 1}
+										onCheckedChange={(checked: boolean) =>
+											field.onChange(checked ? 1 : 0)
+										}
+									/>
+								</FormControl>
+							</FormItem>
+						)}
+					/>
 
 					<FormField
 						control={form.control}

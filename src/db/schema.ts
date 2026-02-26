@@ -25,6 +25,9 @@ export const metersTable = pgTable("meters", {
 	status: varchar("status", { length: 50 }).notNull().default("active"),
 	prefix: varchar("prefix", { length: 50 }),
 
+	// Configuration
+	isInverted: integer("is_inverted").notNull().default(0), // 0 = normal, 1 = inverted
+
 	// Timestamps
 	createdAt: timestamp("created_at").notNull().defaultNow(),
 	updatedAt: timestamp("updated_at").notNull().defaultNow(),

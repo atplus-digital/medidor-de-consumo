@@ -5,6 +5,7 @@ CREATE TABLE "meters" (
 	"location" varchar(255) NOT NULL,
 	"status" varchar(50) DEFAULT 'active' NOT NULL,
 	"prefix" varchar(50),
+	"is_inverted" integer DEFAULT 0 NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
