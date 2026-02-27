@@ -13,11 +13,8 @@ export const Route = createFileRoute("/api/energy/logs")({
 					const startDate = url.searchParams.get("startDate");
 					const endDate = url.searchParams.get("endDate");
 					const meterId = url.searchParams.get("meterId");
-					const limit = parseInt(url.searchParams.get("limit") ?? "100");
-					const offset = parseInt(url.searchParams.get("offset") ?? "0");
-
-					const conditions = [];
-
+					const limit = parseInt(url.searchParams.get("limit") ?? "100", 10);
+					const offset = parseInt(url.searchParams.get("offset") ?? "0", 10);
 					if (meterId) {
 						conditions.push(eq(energyLogTable.meterId, meterId));
 					}

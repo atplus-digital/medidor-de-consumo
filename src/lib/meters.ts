@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 
 /**
  * Generates a unique meter ID with optional prefix + UUID hash

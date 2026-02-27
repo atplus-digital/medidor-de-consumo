@@ -8,12 +8,12 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { useCopyMeterID } from "./hooks/use-copy-meter-id";
 import { Input } from "@/components/ui/input";
-import { DeleteMeterButton } from "./delete-meter-button";
-import { MeterFormDialog } from "../../meter-form/meter-form-dialog";
+import { Separator } from "@/components/ui/separator";
 import type { Meter } from "@/db/schema";
+import { MeterFormDialog } from "../../meter-form/meter-form-dialog";
+import { DeleteMeterButton } from "./delete-meter-button";
+import { useCopyMeterID } from "./hooks/use-copy-meter-id";
 
 export function MeterCard({ meter }: { meter: Meter }) {
 	const { copiedMeterID, handleCopyMeterID } = useCopyMeterID();

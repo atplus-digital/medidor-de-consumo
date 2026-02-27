@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Meter, UpdateMeter } from "@/db/schema";
+import axios from "axios";
 import { toast } from "sonner";
+import type { Meter, UpdateMeter } from "@/db/schema";
 
 export interface SubmitState {
 	error: string | null;
@@ -59,7 +59,7 @@ export function useMeterFormSubmit(
 			toast.success(successMessage);
 			onSuccess?.();
 		},
-		onError: error => {
+		onError: (error) => {
 			toast.error(error instanceof Error ? error.message : "Ocorreu um erro");
 		},
 		onSettled: () => {

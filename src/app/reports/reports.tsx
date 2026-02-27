@@ -1,10 +1,10 @@
+import { ReportsFilters } from "@/app/reports/components/reports-filters";
+import { ReportsHeader } from "@/app/reports/components/reports-header";
+import { ReportsStats } from "@/app/reports/components/reports-stats";
 import {
 	ReportsProvider,
 	useReports,
 } from "@/app/reports/context/reports-context";
-import { ReportsHeader } from "@/app/reports/components/reports-header";
-import { ReportsFilters } from "@/app/reports/components/reports-filters";
-import { ReportsStats } from "@/app/reports/components/reports-stats";
 import { EnergyTable } from "@/app/reports/data-table/energy-table";
 import { Separator } from "@/components/ui/separator";
 

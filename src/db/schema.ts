@@ -1,4 +1,5 @@
 import {
+	boolean,
 	doublePrecision,
 	foreignKey,
 	integer,
@@ -6,7 +7,6 @@ import {
 	pgTable,
 	timestamp,
 	varchar,
-	boolean,
 } from "drizzle-orm/pg-core";
 import {
 	createInsertSchema,
@@ -75,7 +75,7 @@ export const energyLogTable = pgTable(
 		// Timestamp
 		createdAt: timestamp("created_at").notNull().defaultNow(),
 	},
-	table => [
+	(table) => [
 		foreignKey({
 			columns: [table.meterId],
 			foreignColumns: [metersTable.meterId],

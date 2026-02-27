@@ -1,8 +1,6 @@
+import { CircleGauge } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { CircleGauge } from "lucide-react";
-
 import {
 	Empty,
 	EmptyContent,
@@ -11,6 +9,7 @@ import {
 	EmptyMedia,
 	EmptyTitle,
 } from "@/components/ui/empty";
+import { Skeleton } from "@/components/ui/skeleton";
 import { MeterFormDialog } from "../meter-form/meter-form-dialog";
 
 export function LoadingState() {

@@ -19,15 +19,15 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { type Meter, metersUpdateSchema, type UpdateMeter } from "@/db/schema";
 import {
-	STATUS_OPTIONS,
-	STATUS_LABELS,
-	FORM_PLACEHOLDERS,
-	FORM_LABELS,
 	FORM_DESCRIPTIONS,
+	FORM_LABELS,
+	FORM_PLACEHOLDERS,
+	STATUS_LABELS,
+	STATUS_OPTIONS,
 } from "./meter-form.constants";
 import { useMeterFormSubmit } from "./use-meter-form-submit";
-import { metersUpdateSchema, type Meter, type UpdateMeter } from "@/db/schema";
 
 export interface MeterFormProps {
 	meter?: Meter;
@@ -165,7 +165,7 @@ export function MeterForm({ meter, onSuccess, onCancel }: MeterFormProps) {
 											<SelectValue placeholder="Selecione o status" />
 										</SelectTrigger>
 										<SelectContent>
-											{STATUS_OPTIONS.map(status => (
+											{STATUS_OPTIONS.map((status) => (
 												<SelectItem key={status} value={status}>
 													{STATUS_LABELS[status]}
 												</SelectItem>

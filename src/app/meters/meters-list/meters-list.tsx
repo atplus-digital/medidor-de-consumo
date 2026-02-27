@@ -19,7 +19,7 @@ export function MetersList() {
 
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-			{meters.map(meter => (
+			{meters.map((meter) => (
 				<MeterCard key={meter.meterId} meter={meter} />
 			))}
 		</div>

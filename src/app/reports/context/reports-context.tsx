@@ -8,7 +8,7 @@ import {
 	getEnergyLogs,
 	getEnergyStats,
 	getMeterIds,
-} from "@/lib/energy-client";
+} from "@/services/energy-client";
 
 const PAGE_SIZE = 20;
 

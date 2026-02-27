@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEnergyFilters } from "@/contexts/energy-filters-context/energy-filters-context";
-import { getConsumptionByPeriod, getMeterIds } from "@/lib/energy-client";
+import { getConsumptionByPeriod, getMeterIds } from "@/services/energy-client";
 
 type Period = "daily" | "weekly" | "monthly";
 
@@ -77,7 +77,7 @@ function Charts() {
 				/>
 				<Select
 					value={chartType}
-					onValueChange={val => setChartType(val as ChartType)}
+					onValueChange={(val) => setChartType(val as ChartType)}
 				>
 					<SelectTrigger className="w-32">
 						<SelectValue placeholder="Tipo de gráfico" />
@@ -91,7 +91,7 @@ function Charts() {
 			</div>
 
 			{/* Period Tabs */}
-			<Tabs value={period} onValueChange={val => setPeriod(val as Period)}>
+			<Tabs value={period} onValueChange={(val) => setPeriod(val as Period)}>
 				<TabsList>
 					{(Object.entries(periodLabels) as [Period, string][]).map(
 						([key, label]) => (
@@ -102,7 +102,7 @@ function Charts() {
 					)}
 				</TabsList>
 
-				{(Object.keys(periodLabels) as Period[]).map(p => (
+				{(Object.keys(periodLabels) as Period[]).map((p) => (
 					<TabsContent key={p} value={p} className="space-y-6">
 						{/* Consumption Chart */}
 						<ConsumptionChart

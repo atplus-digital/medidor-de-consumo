@@ -1,11 +1,11 @@
-import { createMeter, getMeters } from "@/server/meters";
 import { createFileRoute } from "@tanstack/react-router";
+import { createMeterHandler, getMetersHandler } from "@/api/meters";
 
 export const Route = createFileRoute("/api/meters")({
 	server: {
 		handlers: {
-			GET: getMeters,
-			POST: createMeter,
+			GET: getMetersHandler,
+			POST: createMeterHandler,
 		},
 	},
 });

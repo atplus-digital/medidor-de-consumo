@@ -1,11 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { deleteMeter, getMeterById, updateMeter } from "@/server/meters";
+import {
+	deleteMeterHandler,
+	getMeterByIdHandler,
+	updateMeterHandler,
+} from "@/api/meters";
 
 export const Route = createFileRoute("/api/meters/$meterId")({
 	server: {
 		handlers: {
 			GET: async ({ params }: { params: { meterId: string } }) => {
-				return getMeterById(params.meterId);
+				return getMeterByIdHandler(params.meterId);
 			},
 			PUT: async ({
 				params,
@@ -14,10 +18,10 @@ export const Route = createFileRoute("/api/meters/$meterId")({
 				params: { meterId: string };
 				request: Request;
 			}) => {
-				return updateMeter({ meterId: params.meterId, request });
+				return updateMeterHandler({ meterId: params.meterId, request });
 			},
 			DELETE: async ({ params }: { params: { meterId: string } }) => {
-				return deleteMeter(params.meterId);
+				return deleteMeterHandler(params.meterId);
 			},
 		},
 	},

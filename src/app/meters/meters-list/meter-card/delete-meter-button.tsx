@@ -1,3 +1,7 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -9,13 +13,8 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
 import { useMetersList } from "../use-meters-list";
-import axios from "axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 
 function DeleteMeterButton({ meterId }: { meterId: string }) {
 	const { refresh } = useMetersList();
@@ -29,7 +28,7 @@ function DeleteMeterButton({ meterId }: { meterId: string }) {
 
 			toast.success("Medidor excluído com sucesso");
 		},
-		onError: error => {
+		onError: (error) => {
 			toast.error(error instanceof Error ? error.message : "Ocorreu um erro");
 		},
 		onSettled: () => {

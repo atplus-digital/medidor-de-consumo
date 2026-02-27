@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { toast } from "sonner";
 
 export function useMeterDelete(onDelete?: () => void) {
@@ -14,7 +14,7 @@ export function useMeterDelete(onDelete?: () => void) {
 
 			toast.success("Medidor excluído com sucesso");
 		},
-		onError: error => {
+		onError: (error) => {
 			toast.error(error instanceof Error ? error.message : "Ocorreu um erro");
 		},
 		onSettled: () => {

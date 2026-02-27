@@ -49,7 +49,7 @@ function DateRangePicker({
 					<Calendar
 						mode="single"
 						selected={startDate}
-						onSelect={date => {
+						onSelect={(date) => {
 							onStartDateChange(date);
 							setStartOpen(false);
 						}}
@@ -81,7 +81,7 @@ function DateRangePicker({
 					<Calendar
 						mode="single"
 						selected={endDate}
-						onSelect={date => {
+						onSelect={(date) => {
 							onEndDateChange(date);
 							setEndOpen(false);
 						}}

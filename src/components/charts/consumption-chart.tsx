@@ -103,7 +103,7 @@ function ConsumptionChart({
 						<YAxis />
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<ChartLegend content={<ChartLegendContent />} />
-						{dataKeys.map(dk => (
+						{dataKeys.map((dk) => (
 							<Area
 								key={dk.key}
 								type="monotone"
@@ -124,7 +124,7 @@ function ConsumptionChart({
 						<YAxis />
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<ChartLegend content={<ChartLegendContent />} />
-						{dataKeys.map(dk => (
+						{dataKeys.map((dk) => (
 							<Bar
 								key={dk.key}
 								dataKey={dk.key}
@@ -142,7 +142,7 @@ function ConsumptionChart({
 						<YAxis />
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<ChartLegend content={<ChartLegendContent />} />
-						{dataKeys.map(dk => (
+						{dataKeys.map((dk) => (
 							<Line
 								key={dk.key}
 								type="monotone"

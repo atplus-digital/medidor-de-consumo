@@ -1,3 +1,4 @@
+import { Link, useRouterState } from "@tanstack/react-router";
 import {
 	BarChart3,
 	CircleGaugeIcon,
@@ -5,7 +6,6 @@ import {
 	LayoutDashboard,
 	Zap,
 } from "lucide-react";
-import { Link, useRouterState } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "../mode-toggle";
 
@@ -28,7 +28,7 @@ function AppHeader() {
 				</Link>
 
 				<nav className="flex items-center gap-1">
-					{navItems.map(item => {
+					{navItems.map((item) => {
 						const isActive =
 							item.to === "/"
 								? currentPath === "/"

@@ -1,8 +1,8 @@
 import { Activity, Gauge, TrendingUp, Zap } from "lucide-react";
 import { StatCard } from "@/app/dashboard/components/stat-card";
+import { useDashboard } from "@/app/dashboard/context/dashboard-context";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber } from "@/lib/format";
-import { useDashboard } from "@/app/dashboard/context/dashboard-context";
 
 function Stats() {
 	const { stats, isLoadingStats } = useDashboard();

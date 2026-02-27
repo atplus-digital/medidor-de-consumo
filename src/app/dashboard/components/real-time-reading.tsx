@@ -1,9 +1,9 @@
 import { Activity, Clock, Gauge, Radio, Waves, Zap } from "lucide-react";
+import { useDashboard } from "@/app/dashboard/context/dashboard-context";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber, formatRelative } from "@/lib/format";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useDashboard } from "@/app/dashboard/context/dashboard-context";
 
 function ReadingItem({
 	icon: Icon,

@@ -32,16 +32,16 @@ function EnergyFiltersProvider({ children }: { children: ReactNode }) {
 	const [filters, setFilters] = useState<EnergyFilters>(getDefaultFilters);
 
 	const setStartDate = (date: Date | undefined) =>
-		setFilters(prev => ({ ...prev, startDate: date }));
+		setFilters((prev) => ({ ...prev, startDate: date }));
 
 	const setEndDate = (date: Date | undefined) =>
-		setFilters(prev => ({ ...prev, endDate: date }));
+		setFilters((prev) => ({ ...prev, endDate: date }));
 
 	const setMeterId = (id: string | undefined) =>
-		setFilters(prev => ({ ...prev, meterId: id }));
+		setFilters((prev) => ({ ...prev, meterId: id }));
 
 	const setDateRange = (start: Date | undefined, end: Date | undefined) =>
-		setFilters(prev => ({ ...prev, startDate: start, endDate: end }));
+		setFilters((prev) => ({ ...prev, startDate: start, endDate: end }));
 
 	const resetFilters = () => setFilters(getDefaultFilters());
 

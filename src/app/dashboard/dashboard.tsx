@@ -1,11 +1,11 @@
-import { ConsumptionChart } from "@/components/charts/consumption-chart";
 import { RealTimeReading } from "@/app/dashboard/components/real-time-reading";
-import { Stats } from "./components/stats/stats";
-import { DashboardHeader } from "./components/dashboard-header";
 import {
 	DashboardProvider,
 	useDashboard,
 } from "@/app/dashboard/context/dashboard-context";
+import { ConsumptionChart } from "@/components/charts/consumption-chart";
+import { DashboardHeader } from "./components/dashboard-header";
+import { Stats } from "./components/stats/stats";
 
 function DashboardContent() {
 	const { dailyData, isLoadingChart } = useDashboard();

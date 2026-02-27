@@ -17,7 +17,7 @@ function MeterSelect({ meters, value, onChange }: MeterSelectProps) {
 	return (
 		<Select
 			value={value ?? "all"}
-			onValueChange={val => onChange(val === "all" ? undefined : val)}
+			onValueChange={(val) => onChange(val === "all" ? undefined : val)}
 		>
 			<SelectTrigger className="md:max-w-64 w-52">
 				<Gauge className="mr-2 size-4" />
@@ -25,7 +25,7 @@ function MeterSelect({ meters, value, onChange }: MeterSelectProps) {
 			</SelectTrigger>
 			<SelectContent>
 				<SelectItem value="all">Todos os medidores</SelectItem>
-				{meters.map(meter => (
+				{meters.map((meter) => (
 					<SelectItem key={meter.id} value={meter.id}>
 						{meter.meterName}
 					</SelectItem>

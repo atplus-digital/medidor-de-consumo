@@ -1,3 +1,6 @@
+import { Edit2, PlusIcon } from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
@@ -6,11 +9,8 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { MeterForm } from ".";
 import type { Meter } from "@/db/schema";
-import { Edit2, PlusIcon } from "lucide-react";
+import { MeterForm } from ".";
 
 function MeterFormDialog({ meter }: { meter?: Meter }) {
 	const [open, setOpen] = useState(false);

@@ -73,7 +73,7 @@ function EnergyTable({
 								</TableCell>
 							</TableRow>
 						) : (
-							logs.map(log => (
+							logs.map((log) => (
 								<TableRow key={log.id}>
 									<TableCell className="font-mono text-xs">{log.id}</TableCell>
 									<TableCell>
