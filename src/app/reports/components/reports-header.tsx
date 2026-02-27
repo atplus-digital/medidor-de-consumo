@@ -1,9 +1,4 @@
-import { useReports } from "@/app/reports/context/reports-context";
-import { ExportButtons } from "@/app/reports/export/export-buttons";
-
 function ReportsHeader() {
-	const { logs } = useReports();
-
 	return (
 		<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 			<div>
@@ -12,7 +7,6 @@ function ReportsHeader() {
 					Dados detalhados e exportação de relatórios
 				</p>
 			</div>
-			<ExportButtons logs={logs} filename="relatorio-energia" />
 		</div>
 	);
 }

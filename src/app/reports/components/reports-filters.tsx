@@ -1,9 +1,10 @@
 import { useReports } from "@/app/reports/context/reports-context";
 import { DateRangePicker } from "@/components/filters/date-range-picker";
 import { MeterSelect } from "@/components/filters/meter-select";
+import { ExportButtons } from "./export-buttons";
 
 function ReportsFilters() {
-	const { filters, setStartDate, setEndDate, setMeterId, meterIds } =
+	const { filters, logs, setStartDate, setEndDate, setMeterId, meterIds } =
 		useReports();
 
 	return (
@@ -19,6 +20,7 @@ function ReportsFilters() {
 				value={filters.meterId}
 				onChange={setMeterId}
 			/>
+			<ExportButtons logs={logs} filename="relatorio-energia" />
 		</div>
 	);
 }

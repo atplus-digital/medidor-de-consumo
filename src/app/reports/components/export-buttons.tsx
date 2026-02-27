@@ -1,8 +1,8 @@
 import { FileDown, FileSpreadsheet } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import type { EnergyLog } from "@/db/schema";
 import { exportToCsv, exportToPdf } from "@/services/export";
-import { Button } from "@/components/ui/button";
 
 interface ExportButtonsProps {
 	logs: EnergyLog[];
@@ -31,7 +31,7 @@ function ExportButtons({ logs, filename }: ExportButtonsProps) {
 	};
 
 	return (
-		<div className="flex items-center gap-2">
+		<div className="flex items-center gap-2 ml-auto">
 			<Button
 				variant="outline"
 				size="sm"
