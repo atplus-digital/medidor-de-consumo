@@ -2,9 +2,6 @@ import { and, eq, gte, lte, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { energyLogTable } from "@/db/schema";
 
-/**
- * Get aggregated energy statistics with optional filters
- */
 export async function getEnergyStats({
 	startDate,
 	endDate,

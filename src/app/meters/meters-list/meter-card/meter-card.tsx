@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import type { Meter } from "@/db/schema";
+import { STATUS_LABELS } from "../../meter-form/meter-form.constants";
 import { MeterFormDialog } from "../../meter-form/meter-form-dialog";
 import { DeleteMeterButton } from "./delete-meter-button";
 import { useCopyMeterID } from "./hooks/use-copy-meter-id";
@@ -35,7 +36,7 @@ export function MeterCard({ meter }: { meter: Meter }) {
 						<Badge
 							variant={meter.status === "active" ? "default" : "secondary"}
 						>
-							{meter.status}
+							{STATUS_LABELS[meter.status] ?? meter.status}
 						</Badge>
 					</div>
 				</div>

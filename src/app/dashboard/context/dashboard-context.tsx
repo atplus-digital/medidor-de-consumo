@@ -11,20 +11,13 @@ import {
 } from "@/server/energy";
 
 interface DashboardContextType {
-	// Meter Data
 	meters: Array<{ id: string; meterName: string }>;
 	isLoadingMeterIds: boolean;
-
-	// Latest Reading
 	latestReading?: EnergyLog | null;
 	isLoadingReading: boolean;
 	refetchReading: () => void;
-
-	// Daily Consumption
 	dailyData: ConsumptionData[];
 	isLoadingChart: boolean;
-
-	// Stats
 	stats: EnergyStats | undefined;
 	isLoadingStats: boolean;
 }
@@ -36,13 +29,11 @@ const DashboardContext = createContext<DashboardContextType | undefined>(
 function DashboardProvider({ children }: { children: React.ReactNode }) {
 	const { filters } = useEnergyFilters();
 
-	// Meter IDs
 	const { data: meters = [], isLoading: isLoadingMeterIds } = useQuery({
 		queryKey: ["meter-ids"],
 		queryFn: () => getEnergyMetersFn(),
 	});
 
-	// Latest Reading
 	const {
 		data: latestReading,
 		isLoading: isLoadingReading,
@@ -53,7 +44,6 @@ function DashboardProvider({ children }: { children: React.ReactNode }) {
 		refetchInterval: 10000,
 	});
 
-	// Daily Consumption
 	const { data: dailyData = [], isLoading: isLoadingChart } = useQuery({
 		queryKey: ["daily-consumption-dashboard", filters.meterId],
 		queryFn: () =>
@@ -67,7 +57,6 @@ function DashboardProvider({ children }: { children: React.ReactNode }) {
 			}),
 	});
 
-	// Stats
 	const { data: stats, isLoading: isLoadingStats } = useQuery({
 		queryKey: ["energy-stats", filters.meterId],
 		queryFn: () =>
@@ -85,9 +74,9 @@ function DashboardProvider({ children }: { children: React.ReactNode }) {
 			value={{
 				meters,
 				isLoadingMeterIds,
-				latestReading: latestReading,
+				latestReading,
 				isLoadingReading,
-				refetchReading: () => refetchReading(),
+				refetchReading,
 				dailyData,
 				isLoadingChart,
 				stats,

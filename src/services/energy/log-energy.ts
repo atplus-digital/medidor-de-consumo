@@ -25,24 +25,11 @@ function adaptEnergyData(raw: RawEnergyData): NewEnergyLog {
 	};
 }
 
-/**
- * Apply inversion transformations when meter is installed inverted
- *
- * When a meter is installed inverted (reversed polarity), the following transformations are applied:
- * - Inverts the sign of active power (consumption becomes negative, generation becomes positive)
- * - Inverts the sign of reactive power
- * - Swaps consumed and generated energy values
- *
- * Note: Apparent power is not inverted as it represents magnitude.
- * Phase angle and power factor may need adjustments depending on specific use cases,
- * but are currently left unchanged as they represent physical angles/ratios.
- */
 function applyInversion(data: NewEnergyLog): NewEnergyLog {
 	return {
 		...data,
 		activePower: -data.activePower,
 		reactivePower: -data.reactivePower,
-		// Swap consumed and generated energy
 		consumedEnergy: data.generatedEnergy,
 		generatedEnergy: data.consumedEnergy,
 	};
@@ -59,11 +46,7 @@ function parseRawEnergyData(raw: RawEnergyData, isInverted = false): NewEnergyLo
 	};
 }
 
-/**
- * Log new energy data
- */
 export async function logEnergy(raw: RawEnergyData) {
-	// First, check if meter exists and get its configuration
 	const meterId = raw?.id || "0";
 
 	if (!meterId || meterId === "0") {
@@ -83,10 +66,7 @@ export async function logEnergy(raw: RawEnergyData) {
 	}
 
 	const meter = meterResult[0];
-	const isInverted = meter.isInverted;
-
-	// Parse and transform data based on meter configuration
-	const data = parseRawEnergyData(raw, isInverted);
+	const data = parseRawEnergyData(raw, meter.isInverted);
 
 	if (!data || !data.meterId) {
 		throw new Error("Parsed energy data is invalid");

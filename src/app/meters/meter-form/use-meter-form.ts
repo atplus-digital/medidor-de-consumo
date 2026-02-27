@@ -9,12 +9,6 @@ import {
 } from "@/db/schema";
 import { createMeterFn, updateMeterFn } from "@/server/meters";
 
-export interface SubmitState {
-	error: string | null;
-	success: string | null;
-	loading: boolean;
-}
-
 export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 	const queryClient = useQueryClient();
 

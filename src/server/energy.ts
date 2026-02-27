@@ -4,11 +4,9 @@ import type { RawEnergyData } from "@/db/schema";
 import * as energyService from "@/services/energy";
 
 export const postLogEnergyFn = createServerFn({ method: "POST" })
-	.inputValidator(
-		(data: Record<string, string | number | null | undefined>) => data,
-	)
+	.inputValidator((data: RawEnergyData) => data)
 	.handler(async ({ data }) => {
-		return energyService.logEnergy(data as unknown as RawEnergyData);
+		return energyService.logEnergy(data);
 	});
 
 export const getLatestReadingFn = createServerFn({ method: "GET" })

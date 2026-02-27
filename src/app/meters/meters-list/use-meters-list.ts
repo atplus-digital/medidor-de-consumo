@@ -8,7 +8,6 @@ export function useMetersList() {
 		data: meters,
 		isLoading,
 		error,
-		refetch,
 	} = useQuery({
 		queryKey: ["meters"],
 		queryFn: () => getMetersFn(),
@@ -16,7 +15,6 @@ export function useMetersList() {
 
 	const refresh = () => {
 		queryClient.invalidateQueries({ queryKey: ["meters"] });
-		refetch();
 	};
 
 	return { meters, isLoading, error, refresh };

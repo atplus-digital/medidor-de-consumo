@@ -2,9 +2,6 @@ import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { energyLogTable } from "@/db/schema";
 
-/**
- * Get paginated energy logs with optional filters
- */
 export async function getEnergyLogs({
 	startDate,
 	endDate,
@@ -18,8 +15,7 @@ export async function getEnergyLogs({
 	limit?: number;
 	offset?: number;
 }) {
-	const conditions: Array<ReturnType<typeof eq | typeof gte | typeof lte>> =
-		[];
+	const conditions = [];
 
 	if (meterId) conditions.push(eq(energyLogTable.meterId, meterId));
 	if (startDate)

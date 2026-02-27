@@ -13,17 +13,16 @@ export function ThemeProvider({
 	children,
 	defaultTheme = "system",
 	storageKey = "vite-ui-theme",
-	...props
 }: ThemeProviderProps) {
 	function getStoredUserTheme(): Theme {
-		if (typeof window === "undefined") return "system";
+		if (typeof window === "undefined") return defaultTheme;
 		try {
 			const stored = localStorage.getItem(storageKey);
 			return stored && ["light", "dark", "system"].includes(stored)
 				? (stored as Theme)
-				: "system";
+				: defaultTheme;
 		} catch {
-			return "system";
+			return defaultTheme;
 		}
 	}
 
@@ -70,7 +69,7 @@ export function ThemeProvider({
 	};
 
 	return (
-		<ThemeProviderContext.Provider {...props} value={value}>
+		<ThemeProviderContext.Provider value={value}>
 			{children}
 		</ThemeProviderContext.Provider>
 	);

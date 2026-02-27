@@ -2,9 +2,6 @@ import { and, eq, gte, lte, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { energyLogTable } from "@/db/schema";
 
-/**
- * Get energy consumption grouped by period (daily, weekly, monthly)
- */
 export async function getConsumptionByPeriod({
 	period = "daily",
 	startDate,

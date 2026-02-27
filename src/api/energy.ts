@@ -2,9 +2,6 @@ import { jsonResponse } from "@/api";
 import type { RawEnergyData } from "@/db/schema";
 import { postLogEnergyFn } from "@/server/energy";
 
-/**
- * POST /api/energy - Log new energy data (called by external IoT devices)
- */
 export async function postLogEnergyHandler({
 	request,
 }: {
@@ -17,16 +14,8 @@ export async function postLogEnergyHandler({
 	} catch (error) {
 		console.error("Error logging energy:", error);
 
-		if (error instanceof Error && error.message.includes("Invalid meter ID")) {
-			return jsonResponse.error(error.message, 400);
-		}
-		if (error instanceof Error && error.message.includes("does not exist")) {
-			return jsonResponse.error(error.message, 400);
-		}
-		if (error instanceof Error && error.message.includes("invalid")) {
-			return jsonResponse.error(error.message, 400);
-		}
-
-		return jsonResponse.error("Invalid energy log data", 400);
+		const message =
+			error instanceof Error ? error.message : "Invalid energy log data";
+		return jsonResponse.error(message, 400);
 	}
 }

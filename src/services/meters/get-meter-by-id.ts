@@ -2,9 +2,6 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { metersTable } from "@/db/schema";
 
-/**
- * Get a specific meter by ID
- */
 export async function getMeterById(meterId: string) {
 	const meter = await db
 		.select()

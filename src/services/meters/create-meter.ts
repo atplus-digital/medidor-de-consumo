@@ -1,15 +1,10 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { metersInsertSchema, metersTable } from "@/db/schema";
+import { type MeterFormData, metersTable } from "@/db/schema";
 import { generateMeterId } from "./generate-meter-id";
 
-/**
- * Create a new meter
- */
-export async function createMeter(data: Record<string, unknown>) {
-	const validatedData = metersInsertSchema.parse(data);
-
-	const meterId = generateMeterId(validatedData.prefix || undefined);
+export async function createMeter(data: MeterFormData) {
+	const meterId = generateMeterId(data.prefix || undefined);
 
 	const existingMeter = await db
 		.select()
@@ -21,19 +16,16 @@ export async function createMeter(data: Record<string, unknown>) {
 		throw new Error("Meter ID already exists");
 	}
 
-	// Create the meter
+	const now = new Date();
 	const newMeter = await db
 		.insert(metersTable)
 		.values({
 			meterId,
-			meterName: validatedData.meterName,
-			meterType: validatedData.meterType,
-			location: validatedData.location,
-			status: validatedData.status || "active",
-			prefix: validatedData.prefix,
-			isInverted: validatedData.isInverted ?? false,
-			createdAt: new Date(),
-			updatedAt: new Date(),
+			...data,
+			status: data.status || "active",
+			isInverted: data.isInverted ?? false,
+			createdAt: now,
+			updatedAt: now,
 		})
 		.returning();
 

@@ -2,9 +2,6 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { energyLogTable, metersTable } from "@/db/schema";
 
-/**
- * Get distinct meters that have energy logs
- */
 export async function getEnergyMeters() {
 	return db
 		.selectDistinct({
