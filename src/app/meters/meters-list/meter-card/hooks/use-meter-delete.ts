@@ -1,14 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { toast } from "sonner";
+import { deleteMeterFn } from "@/server/meters";
 
 export function useMeterDelete(onDelete?: () => void) {
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation({
-		mutationFn: async (meterId: string) => {
-			return await axios.delete(`/api/meters/${meterId}`);
-		},
+		mutationFn: (meterId: string) => deleteMeterFn({ data: meterId }),
+
 		onSuccess: () => {
 			onDelete?.();
 

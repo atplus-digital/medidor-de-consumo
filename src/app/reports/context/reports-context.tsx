@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import type React from "react";
 import { createContext, useContext, useState } from "react";
-import {
-	getEnergyLogs,
-	getEnergyStats,
-	getMeterIds,
-} from "@/api/energy-client";
 import { useEnergyFilters } from "@/contexts/energy-filters-context/energy-filters-context";
 import type { EnergyLog, EnergyStats } from "@/db/schema";
+import {
+	getEnergyLogsFn,
+	getEnergyMetersFn,
+	getEnergyStatsFn,
+} from "@/server/energy";
 
 const PAGE_SIZE = 20;
 
@@ -49,7 +49,7 @@ function ReportsProvider({ children }: { children: React.ReactNode }) {
 
 	const { data: meterIds = [], isLoading: isLoadingMeters } = useQuery({
 		queryKey: ["meter-ids"],
-		queryFn: () => getMeterIds(),
+		queryFn: () => getEnergyMetersFn(),
 	});
 
 	const { data: logsData, isLoading: isLoadingLogs } = useQuery({
@@ -61,13 +61,15 @@ function ReportsProvider({ children }: { children: React.ReactNode }) {
 			page,
 		],
 		queryFn: () =>
-			getEnergyLogs(
-				filters.startDate?.toISOString(),
-				filters.endDate?.toISOString(),
-				filters.meterId,
-				PAGE_SIZE,
-				(page - 1) * PAGE_SIZE,
-			),
+			getEnergyLogsFn({
+				data: {
+					startDate: filters.startDate?.toISOString(),
+					endDate: filters.endDate?.toISOString(),
+					meterId: filters.meterId,
+					limit: PAGE_SIZE,
+					offset: (page - 1) * PAGE_SIZE,
+				},
+			}),
 	});
 
 	const { data: stats, isLoading: isLoadingStats } = useQuery({
@@ -78,11 +80,13 @@ function ReportsProvider({ children }: { children: React.ReactNode }) {
 			filters.meterId,
 		],
 		queryFn: () =>
-			getEnergyStats(
-				filters.startDate?.toISOString(),
-				filters.endDate?.toISOString(),
-				filters.meterId,
-			),
+			getEnergyStatsFn({
+				data: {
+					startDate: filters.startDate?.toISOString(),
+					endDate: filters.endDate?.toISOString(),
+					meterId: filters.meterId,
+				},
+			}),
 	});
 
 	const handleSetStartDate = (date: Date | undefined) => {

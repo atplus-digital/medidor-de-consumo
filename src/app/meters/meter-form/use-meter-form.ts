@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
@@ -8,6 +7,7 @@ import {
 	type MeterFormData,
 	meterFormSchema,
 } from "@/db/schema";
+import { createMeterFn, updateMeterFn } from "@/server/meters";
 
 export interface SubmitState {
 	error: string | null;
@@ -33,33 +33,26 @@ export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 	});
 
 	const handleSubmit = async (values: MeterFormData) => {
-		const url = meter ? `/api/meters/${meter.meterId}` : "/api/meters";
-
-		const payloadData: Record<string, string | number | undefined | boolean> = {
-			meterName: values.meterName?.trim(),
-			meterType: values.meterType?.trim(),
-			location: values.location?.trim(),
-			isInverted: values.isInverted || false,
-			status: values.status,
-		};
-
-		if (!meter && values.prefix?.trim()) {
-			payloadData.prefix = values.prefix.trim();
-		}
-
-		try {
-			if (meter) {
-				await axios.put(url, payloadData);
-			} else {
-				await axios.post(url, payloadData);
-			}
-		} catch (error) {
-			if (axios.isAxiosError(error)) {
-				const message =
-					error.response?.data?.message || "Falha ao salvar medidor";
-				throw new Error(message);
-			}
-			throw error;
+		if (meter) {
+			await updateMeterFn({
+				data: {
+					meterId: meter.meterId,
+					data: {
+						meterName: values.meterName,
+						meterType: values.meterType,
+						location: values.location,
+						isInverted: values.isInverted,
+						status: values.status,
+					},
+				},
+			});
+		} else {
+			await createMeterFn({
+				data: {
+					...values,
+					prefix: values.prefix?.trim() || null,
+				},
+			});
 		}
 
 		return true;

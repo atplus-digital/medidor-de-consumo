@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -14,6 +13,7 @@ import {
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { deleteMeterFn } from "@/server/meters";
 import { useMetersList } from "../use-meters-list";
 
 function DeleteMeterButton({ meterId }: { meterId: string }) {
@@ -22,7 +22,7 @@ function DeleteMeterButton({ meterId }: { meterId: string }) {
 	const queryClient = useQueryClient();
 
 	const { isPending, mutateAsync } = useMutation({
-		mutationFn: async () => await axios.delete(`/api/meters/${meterId}`),
+		mutationFn: () => deleteMeterFn({ data: meterId }),
 		onSuccess: () => {
 			refresh();
 

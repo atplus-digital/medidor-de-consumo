@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { getConsumptionByPeriod, getMeterIds } from "@/api/energy-client";
 import {
 	type ChartType,
 	ConsumptionChart,
@@ -16,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEnergyFilters } from "@/contexts/energy-filters-context/energy-filters-context";
+import { getConsumptionByPeriodFn, getEnergyMetersFn } from "@/server/energy";
 
 type Period = "daily" | "weekly" | "monthly";
 
@@ -32,7 +32,7 @@ function Charts() {
 
 	const { data: meterIds = [] } = useQuery({
 		queryKey: ["meter-ids"],
-		queryFn: () => getMeterIds(),
+		queryFn: () => getEnergyMetersFn(),
 	});
 
 	const { data: consumptionData = [], isLoading } = useQuery({
@@ -44,12 +44,14 @@ function Charts() {
 			filters.meterId,
 		],
 		queryFn: () =>
-			getConsumptionByPeriod(
-				period,
-				filters.startDate?.toISOString(),
-				filters.endDate?.toISOString(),
-				filters.meterId,
-			),
+			getConsumptionByPeriodFn({
+				data: {
+					period,
+					startDate: filters.startDate?.toISOString(),
+					endDate: filters.endDate?.toISOString(),
+					meterId: filters.meterId,
+				},
+			}),
 	});
 
 	return (

@@ -38,7 +38,7 @@ export const energyLogTable = pgTable(
 		operationTime: doublePrecision("operation_time").notNull(), // s
 
 		// Raw data (backup)
-		rawData: jsonb("raw_data"),
+		rawData: jsonb("raw_data").$type<Record<string, string>>(),
 
 		// Timestamp
 		createdAt: timestamp("created_at").notNull().defaultNow(),

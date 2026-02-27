@@ -55,7 +55,7 @@ function parseRawEnergyData(raw: RawEnergyData, isInverted = false): NewEnergyLo
 
 	return {
 		...parsed,
-		rawData: raw,
+		rawData: raw as Record<string, string>,
 	};
 }
 

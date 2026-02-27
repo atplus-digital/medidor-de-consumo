@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { subDays } from "date-fns";
 import { createContext, useContext } from "react";
-import {
-	getConsumptionByPeriod,
-	getEnergyStats,
-	getLatestReading,
-	getMeterIds,
-} from "@/api/energy-client";
 import { useEnergyFilters } from "@/contexts/energy-filters-context/energy-filters-context";
 import type { ConsumptionData, EnergyLog, EnergyStats } from "@/db/schema";
+import {
+	getConsumptionByPeriodFn,
+	getEnergyMetersFn,
+	getEnergyStatsFn,
+	getLatestReadingFn,
+} from "@/server/energy";
 
 interface DashboardContextType {
 	// Meter Data
@@ -16,7 +16,7 @@ interface DashboardContextType {
 	isLoadingMeterIds: boolean;
 
 	// Latest Reading
-	latestReading: EnergyLog | null;
+	latestReading?: EnergyLog | null;
 	isLoadingReading: boolean;
 	refetchReading: () => void;
 
@@ -39,7 +39,7 @@ function DashboardProvider({ children }: { children: React.ReactNode }) {
 	// Meter IDs
 	const { data: meters = [], isLoading: isLoadingMeterIds } = useQuery({
 		queryKey: ["meter-ids"],
-		queryFn: () => getMeterIds(),
+		queryFn: () => getEnergyMetersFn(),
 	});
 
 	// Latest Reading
@@ -49,7 +49,7 @@ function DashboardProvider({ children }: { children: React.ReactNode }) {
 		refetch: refetchReading,
 	} = useQuery({
 		queryKey: ["latest-reading", filters.meterId],
-		queryFn: () => getLatestReading(filters.meterId),
+		queryFn: () => getLatestReadingFn({ data: { meterId: filters.meterId } }),
 		refetchInterval: 10000,
 	});
 
@@ -57,23 +57,27 @@ function DashboardProvider({ children }: { children: React.ReactNode }) {
 	const { data: dailyData = [], isLoading: isLoadingChart } = useQuery({
 		queryKey: ["daily-consumption-dashboard", filters.meterId],
 		queryFn: () =>
-			getConsumptionByPeriod(
-				"daily",
-				subDays(new Date(), 7).toISOString(),
-				new Date().toISOString(),
-				filters.meterId,
-			),
+			getConsumptionByPeriodFn({
+				data: {
+					period: "daily",
+					startDate: subDays(new Date(), 7).toISOString(),
+					endDate: new Date().toISOString(),
+					meterId: filters.meterId,
+				},
+			}),
 	});
 
 	// Stats
 	const { data: stats, isLoading: isLoadingStats } = useQuery({
 		queryKey: ["energy-stats", filters.meterId],
 		queryFn: () =>
-			getEnergyStats(
-				filters.startDate?.toISOString(),
-				filters.endDate?.toISOString(),
-				filters.meterId,
-			),
+			getEnergyStatsFn({
+				data: {
+					startDate: filters.startDate?.toISOString(),
+					endDate: filters.endDate?.toISOString(),
+					meterId: filters.meterId,
+				},
+			}),
 	});
 
 	return (
@@ -81,7 +85,7 @@ function DashboardProvider({ children }: { children: React.ReactNode }) {
 			value={{
 				meters,
 				isLoadingMeterIds,
-				latestReading: latestReading ?? null,
+				latestReading: latestReading,
 				isLoadingReading,
 				refetchReading: () => refetchReading(),
 				dailyData,

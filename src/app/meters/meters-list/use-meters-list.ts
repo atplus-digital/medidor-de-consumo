@@ -1,6 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import type { Meter } from "@/db/schema";
+import { getMetersFn } from "@/server/meters";
 
 export function useMetersList() {
 	const queryClient = useQueryClient();
@@ -12,10 +11,7 @@ export function useMetersList() {
 		refetch,
 	} = useQuery({
 		queryKey: ["meters"],
-		queryFn: async () => {
-			const response = await axios.get<{ data: Meter[] }>("/api/meters");
-			return response.data.data;
-		},
+		queryFn: () => getMetersFn(),
 	});
 
 	const refresh = () => {
