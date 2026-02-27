@@ -5,6 +5,8 @@ function invertReading(data: NewEnergyLog): NewEnergyLog {
 		...data,
 		activePower: -data.activePower,
 		reactivePower: -data.reactivePower,
+		apparentPower: -data.apparentPower,
+		//consumedEnergy becomes generatedEnergy and vice versa
 		consumedEnergy: data.generatedEnergy,
 		generatedEnergy: data.consumedEnergy,
 	};
