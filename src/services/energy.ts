@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { db } from "@/db";
 import {
 	energyLogSchema,
@@ -95,4 +95,171 @@ export async function logEnergy(raw: RawEnergyData) {
 	await db.insert(energyLogTable).values(data);
 
 	return { message: "Energy log saved successfully" };
+}
+
+/**
+ * Get the latest energy reading, optionally filtered by meter
+ */
+export async function getLatestReading(meterId?: string | null) {
+	const conditions = [];
+	if (meterId) conditions.push(eq(energyLogTable.meterId, meterId));
+
+	const result = await db
+		.select()
+		.from(energyLogTable)
+		.where(conditions.length > 0 ? and(...conditions) : undefined)
+		.orderBy(desc(energyLogTable.createdAt))
+		.limit(1);
+
+	return result[0] ?? null;
+}
+
+/**
+ * Get paginated energy logs with optional filters
+ */
+export async function getEnergyLogs({
+	startDate,
+	endDate,
+	meterId,
+	limit = 100,
+	offset = 0,
+}: {
+	startDate?: string | null;
+	endDate?: string | null;
+	meterId?: string | null;
+	limit?: number;
+	offset?: number;
+}) {
+	const conditions: Array<ReturnType<typeof eq | typeof gte | typeof lte>> =
+		[];
+
+	if (meterId) conditions.push(eq(energyLogTable.meterId, meterId));
+	if (startDate)
+		conditions.push(gte(energyLogTable.createdAt, new Date(startDate)));
+	if (endDate)
+		conditions.push(lte(energyLogTable.createdAt, new Date(endDate)));
+
+	const where = conditions.length > 0 ? and(...conditions) : undefined;
+
+	const logs = await db
+		.select()
+		.from(energyLogTable)
+		.where(where)
+		.orderBy(desc(energyLogTable.createdAt))
+		.limit(limit)
+		.offset(offset);
+
+	const countResult = await db
+		.select({ count: sql<number>`cast(count(*) as integer)` })
+		.from(energyLogTable)
+		.where(where);
+
+	return { logs, total: countResult[0]?.count ?? 0 };
+}
+
+/**
+ * Get aggregated energy statistics with optional filters
+ */
+export async function getEnergyStats({
+	startDate,
+	endDate,
+	meterId,
+}: {
+	startDate?: string | null;
+	endDate?: string | null;
+	meterId?: string | null;
+}) {
+	const conditions = [];
+
+	if (meterId) conditions.push(eq(energyLogTable.meterId, meterId));
+	if (startDate)
+		conditions.push(gte(energyLogTable.createdAt, new Date(startDate)));
+	if (endDate)
+		conditions.push(lte(energyLogTable.createdAt, new Date(endDate)));
+
+	const where = conditions.length > 0 ? and(...conditions) : undefined;
+
+	const result = await db
+		.select({
+			totalConsumed: sql<number>`coalesce(sum(${energyLogTable.consumedEnergy}), 0)`,
+			totalGenerated: sql<number>`coalesce(sum(${energyLogTable.generatedEnergy}), 0)`,
+			avgActivePower: sql<number>`coalesce(avg(${energyLogTable.activePower}), 0)`,
+			maxActivePower: sql<number>`coalesce(max(${energyLogTable.activePower}), 0)`,
+			minActivePower: sql<number>`coalesce(min(${energyLogTable.activePower}), 0)`,
+			avgVoltage: sql<number>`coalesce(avg(${energyLogTable.voltage}), 0)`,
+			avgCurrent: sql<number>`coalesce(avg(${energyLogTable.current}), 0)`,
+			avgPowerFactor: sql<number>`coalesce(avg(${energyLogTable.powerFactor}), 0)`,
+			totalReadings: sql<number>`cast(count(*) as integer)`,
+		})
+		.from(energyLogTable)
+		.where(where);
+
+	return result[0];
+}
+
+/**
+ * Get energy consumption grouped by period (daily, weekly, monthly)
+ */
+export async function getConsumptionByPeriod({
+	period = "daily",
+	startDate,
+	endDate,
+	meterId,
+}: {
+	period?: "daily" | "weekly" | "monthly";
+	startDate?: string | null;
+	endDate?: string | null;
+	meterId?: string | null;
+}) {
+	const conditions = [];
+
+	if (meterId) conditions.push(eq(energyLogTable.meterId, meterId));
+	if (startDate)
+		conditions.push(gte(energyLogTable.createdAt, new Date(startDate)));
+	if (endDate)
+		conditions.push(lte(energyLogTable.createdAt, new Date(endDate)));
+
+	const where = conditions.length > 0 ? and(...conditions) : undefined;
+
+	let dateExpr = sql`date(${energyLogTable.createdAt})`;
+
+	switch (period) {
+		case "weekly":
+			dateExpr = sql`date_trunc('week', ${energyLogTable.createdAt})::date`;
+			break;
+		case "monthly":
+			dateExpr = sql`date_trunc('month', ${energyLogTable.createdAt})::date`;
+			break;
+		default:
+			dateExpr = sql`date(${energyLogTable.createdAt})`;
+	}
+
+	return db
+		.select({
+			date: sql<string>`${dateExpr}`,
+			totalConsumed: sql<number>`coalesce(sum(${energyLogTable.consumedEnergy}), 0)`,
+			totalGenerated: sql<number>`coalesce(sum(${energyLogTable.generatedEnergy}), 0)`,
+			avgActivePower: sql<number>`coalesce(avg(${energyLogTable.activePower}), 0)`,
+			maxActivePower: sql<number>`coalesce(max(${energyLogTable.activePower}), 0)`,
+			avgVoltage: sql<number>`coalesce(avg(${energyLogTable.voltage}), 0)`,
+			avgCurrent: sql<number>`coalesce(avg(${energyLogTable.current}), 0)`,
+			readings: sql<number>`cast(count(*) as integer)`,
+		})
+		.from(energyLogTable)
+		.where(where)
+		.groupBy(dateExpr)
+		.orderBy(dateExpr);
+}
+
+/**
+ * Get distinct meters that have energy logs
+ */
+export async function getEnergyMeters() {
+	return db
+		.selectDistinct({
+			id: energyLogTable.meterId,
+			meterName: metersTable.meterName,
+		})
+		.from(energyLogTable)
+		.innerJoin(metersTable, eq(energyLogTable.meterId, metersTable.meterId));
 }
