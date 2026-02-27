@@ -1,6 +1,6 @@
 import { jsonResponse } from "@/api";
 import type { RawEnergyData } from "@/db/schema";
-import * as energyService from "@/services/energy";
+import { postLogEnergyFn } from "@/server/energy";
 
 /**
  * POST /api/energy - Log new energy data (called by external IoT devices)
@@ -12,7 +12,7 @@ export async function postLogEnergyHandler({
 }): Promise<Response> {
 	try {
 		const raw: RawEnergyData = await request.json();
-		const result = await energyService.logEnergy(raw);
+		const result = await postLogEnergyFn({ data: raw });
 		return jsonResponse.success(result);
 	} catch (error) {
 		console.error("Error logging energy:", error);
@@ -30,4 +30,3 @@ export async function postLogEnergyHandler({
 		return jsonResponse.error("Invalid energy log data", 400);
 	}
 }
-

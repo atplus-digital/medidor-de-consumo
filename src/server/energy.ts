@@ -2,6 +2,27 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import * as energyService from "@/services/energy";
 
+const rawEnergyDataSchema = z.object({
+	id: z.string().optional(),
+	pa: z.string().optional(),
+	qa: z.string().optional(),
+	sa: z.string().optional(),
+	uarms: z.string().optional(),
+	iarms: z.string().optional(),
+	pfa: z.string().optional(),
+	pga: z.string().optional(),
+	freq: z.string().optional(),
+	epa_c: z.string().optional(),
+	epa_g: z.string().optional(),
+	tpsd: z.string().optional(),
+});
+
+export const postLogEnergyFn = createServerFn({ method: "POST" })
+	.inputValidator(rawEnergyDataSchema)
+	.handler(async ({ data }) => {
+		return energyService.logEnergy(data);
+	});
+
 export const getLatestReadingFn = createServerFn({ method: "GET" })
 	.inputValidator(z.object({ meterId: z.string().optional() }).optional())
 	.handler(async ({ data }) => {
