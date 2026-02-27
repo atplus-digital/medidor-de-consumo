@@ -1,26 +1,17 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import type { RawEnergyData } from "@/db/schema";
 import * as energyService from "@/services/energy";
 
-const rawEnergyDataSchema = z.object({
-	id: z.string().optional(),
-	pa: z.string().optional(),
-	qa: z.string().optional(),
-	sa: z.string().optional(),
-	uarms: z.string().optional(),
-	iarms: z.string().optional(),
-	pfa: z.string().optional(),
-	pga: z.string().optional(),
-	freq: z.string().optional(),
-	epa_c: z.string().optional(),
-	epa_g: z.string().optional(),
-	tpsd: z.string().optional(),
-});
+const rawEnergyDataSchema = z.record(
+	z.string(),
+	z.number().or(z.string()).optional().nullable(),
+);
 
 export const postLogEnergyFn = createServerFn({ method: "POST" })
 	.inputValidator(rawEnergyDataSchema)
 	.handler(async ({ data }) => {
-		return energyService.logEnergy(data);
+		return energyService.logEnergy(data as unknown as RawEnergyData);
 	});
 
 export const getLatestReadingFn = createServerFn({ method: "GET" })
