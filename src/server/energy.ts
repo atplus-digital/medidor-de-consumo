@@ -3,13 +3,10 @@ import { z } from "zod";
 import type { RawEnergyData } from "@/db/schema";
 import * as energyService from "@/services/energy";
 
-const rawEnergyDataSchema = z.record(
-	z.string(),
-	z.number().or(z.string()).optional().nullable(),
-);
-
 export const postLogEnergyFn = createServerFn({ method: "POST" })
-	.inputValidator(rawEnergyDataSchema)
+	.inputValidator(
+		(data: Record<string, string | number | null | undefined>) => data,
+	)
 	.handler(async ({ data }) => {
 		return energyService.logEnergy(data as unknown as RawEnergyData);
 	});
