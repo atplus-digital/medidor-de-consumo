@@ -37,7 +37,10 @@ function DeleteMeterButton({ meterId }: { meterId: string }) {
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancelar</AlertDialogCancel>
-					<AlertDialogAction variant="destructive" onClick={() => handleDelete(meterId)}>
+					<AlertDialogAction
+						variant="destructive"
+						onClick={() => handleDelete(meterId)}
+					>
 						Excluir
 					</AlertDialogAction>
 				</AlertDialogFooter>

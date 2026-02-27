@@ -35,7 +35,10 @@ function applyInversion(data: NewEnergyLog): NewEnergyLog {
 	};
 }
 
-function parseRawEnergyData(raw: RawEnergyData, isInverted = false): NewEnergyLog {
+function parseRawEnergyData(
+	raw: RawEnergyData,
+	isInverted = false,
+): NewEnergyLog {
 	const adapted = adaptEnergyData(raw);
 	const transformed = isInverted ? applyInversion(adapted) : adapted;
 	const parsed = energyLogSchema.parse(transformed);

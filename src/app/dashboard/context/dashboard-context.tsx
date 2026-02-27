@@ -17,5 +17,4 @@ const DashboardContext = createContext<DashboardContextType | undefined>(
 	undefined,
 );
 
-
 export { DashboardContext };

@@ -2,11 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import {
-	type Meter,
-	type MeterFormData,
-	meterFormSchema,
-} from "@/db/schema";
+import { type Meter, type MeterFormData, meterFormSchema } from "@/db/schema";
 import { createMeterFn, updateMeterFn } from "@/server/meters";
 
 export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {

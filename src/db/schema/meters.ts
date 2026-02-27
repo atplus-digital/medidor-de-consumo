@@ -1,9 +1,4 @@
-import {
-	boolean,
-	pgTable,
-	timestamp,
-	varchar,
-} from "drizzle-orm/pg-core";
+import { boolean, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
 import {
 	createInsertSchema,
 	createSelectSchema,

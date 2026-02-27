@@ -1,8 +1,8 @@
 import { RealTimeReading } from "@/app/dashboard/components/real-time-reading/real-time-reading";
 import { DashboardProvider } from "@/app/dashboard/context/dashboard-provider";
-import { WeekConsumptionChart } from "./components/week-consumption-chart";
 import { DashboardHeader } from "./components/dashboard-header";
 import { Stats } from "./components/stats/stats";
+import { WeekConsumptionChart } from "./components/week-consumption-chart";
 
 function Dashboard() {
 	return (
