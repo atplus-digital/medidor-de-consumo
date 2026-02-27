@@ -1,61 +1,16 @@
 import { Activity, Clock, Gauge, Radio, Waves, Zap } from "lucide-react";
-import { useDashboard } from "@/app/dashboard/context/dashboard-context";
+import { useDashboard } from "@/app/dashboard/context/use-dashboard";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber, formatRelative } from "@/lib/format";
-
-function ReadingItem({
-	icon: Icon,
-	label,
-	value,
-	unit,
-}: {
-	icon: React.ComponentType<{ className?: string }>;
-	label: string;
-	value: string;
-	unit: string;
-}) {
-	return (
-		<div className="flex items-center gap-3 rounded-lg border bg-card p-3">
-			<div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
-				<Icon className="size-5 text-primary" />
-			</div>
-			<div className="min-w-0 flex-1">
-				<p className="text-xs text-muted-foreground">{label}</p>
-				<p className="truncate text-lg font-semibold">
-					{value} <span className="text-xs text-muted-foreground">{unit}</span>
-				</p>
-			</div>
-		</div>
-	);
-}
+import { ReadingItem } from "./reading-item";
+import { RealTimeReadingLoading } from "./real-time-reading-loading";
 
 function RealTimeReading() {
 	const { latestReading, isLoadingReading } = useDashboard();
 
 	if (isLoadingReading) {
-		return (
-			<Card>
-				<CardHeader>
-					<CardTitle className="flex items-center gap-2">
-						<Skeleton className="h-5 w-40" />
-					</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-						<Skeleton className="h-20" />
-						<Skeleton className="h-20" />
-						<Skeleton className="h-20" />
-						<Skeleton className="h-20" />
-						<Skeleton className="h-20" />
-						<Skeleton className="h-20" />
-						<Skeleton className="h-20" />
-						<Skeleton className="h-20" />
-					</div>
-				</CardContent>
-			</Card>
-		);
+		return <RealTimeReadingLoading />;
 	}
 
 	if (!latestReading) {

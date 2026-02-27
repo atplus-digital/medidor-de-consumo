@@ -1,5 +1,5 @@
 import { Activity, Hash, TrendingUp, Zap } from "lucide-react";
-import { StatCard } from "@/app/dashboard/components/stat-card";
+import { StatCard } from "@/components/stat-card";
 import { useReports } from "@/app/reports/context/reports-context";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber } from "@/lib/format";

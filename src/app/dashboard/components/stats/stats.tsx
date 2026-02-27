@@ -1,6 +1,6 @@
 import { Activity, Gauge, TrendingUp, Zap } from "lucide-react";
-import { StatCard } from "@/app/dashboard/components/stat-card";
-import { useDashboard } from "@/app/dashboard/context/dashboard-context";
+import { StatCard } from "@/components/stat-card";
+import { useDashboard } from "@/app/dashboard/context/use-dashboard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber } from "@/lib/format";
 
