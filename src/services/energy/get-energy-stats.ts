@@ -23,8 +23,8 @@ export async function getEnergyStats({
 
 	const result = await db
 		.select({
-			totalConsumed: sql<number>`coalesce(sum(${energyLogTable.consumedEnergy}), 0)`,
-			totalGenerated: sql<number>`coalesce(sum(${energyLogTable.generatedEnergy}), 0)`,
+			totalConsumed: sql<number>`coalesce(max(${energyLogTable.consumedEnergy}) - min(${energyLogTable.consumedEnergy}), 0)`,
+			totalGenerated: sql<number>`coalesce(max(${energyLogTable.generatedEnergy}) - min(${energyLogTable.generatedEnergy}), 0)`,
 			avgActivePower: sql<number>`coalesce(avg(${energyLogTable.activePower}), 0)`,
 			maxActivePower: sql<number>`coalesce(max(${energyLogTable.activePower}), 0)`,
 			minActivePower: sql<number>`coalesce(min(${energyLogTable.activePower}), 0)`,
