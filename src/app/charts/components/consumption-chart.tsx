@@ -9,7 +9,7 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
 import {
 	type ChartConfig,
 	ChartContainer,
@@ -17,8 +17,8 @@ import {
 	ChartLegendContent,
 	ChartTooltip,
 	ChartTooltipContent,
-} from "../ui/chart";
-import { Skeleton } from "../ui/skeleton";
+} from "../../../components/ui/chart";
+import { Skeleton } from "../../../components/ui/skeleton";
 
 type ChartType = "area" | "bar" | "line";
 

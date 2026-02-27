@@ -1,9 +1,9 @@
+import { ConsumptionChart } from "@/app/charts/components/consumption-chart";
 import { RealTimeReading } from "@/app/dashboard/components/real-time-reading";
 import {
 	DashboardProvider,
 	useDashboard,
 } from "@/app/dashboard/context/dashboard-context";
-import { ConsumptionChart } from "@/components/charts/consumption-chart";
 import { DashboardHeader } from "./components/dashboard-header";
 import { Stats } from "./components/stats/stats";
 

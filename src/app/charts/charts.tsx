@@ -4,7 +4,7 @@ import { getConsumptionByPeriod, getMeterIds } from "@/api/energy-client";
 import {
 	type ChartType,
 	ConsumptionChart,
-} from "@/components/charts/consumption-chart";
+} from "@/app/charts/components/consumption-chart";
 import { DateRangePicker } from "@/components/filters/date-range-picker";
 import { MeterSelect } from "@/components/filters/meter-select";
 import {
