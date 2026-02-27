@@ -1,28 +1,9 @@
 import axios from "axios";
-import type { EnergyLog } from "@/db/schema";
-
-export interface EnergyStats {
-	totalConsumed?: number;
-	totalGenerated?: number;
-	avgActivePower?: number;
-	maxActivePower?: number;
-	minActivePower?: number;
-	avgVoltage?: number;
-	avgCurrent?: number;
-	avgPowerFactor?: number;
-	totalReadings?: number;
-}
-
-export interface ConsumptionData extends Record<string, unknown> {
-	date: string;
-	totalConsumed: number;
-	totalGenerated: number;
-	avgActivePower: number;
-	maxActivePower: number;
-	avgVoltage: number;
-	avgCurrent: number;
-	readings: number;
-}
+import type {
+	ConsumptionData,
+	EnergyLog,
+	EnergyStats,
+} from "@/db/schema";
 
 async function fetchApi<T>(url: string): Promise<T> {
 	const response = await axios.get<{ data: T }>(url);

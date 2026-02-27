@@ -1,16 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { subDays } from "date-fns";
 import { createContext, useContext } from "react";
-import { useEnergyFilters } from "@/contexts/energy-filters-context/energy-filters-context";
-import type { EnergyLog } from "@/db/schema";
 import {
-	type ConsumptionData,
-	type EnergyStats,
 	getConsumptionByPeriod,
 	getEnergyStats,
 	getLatestReading,
 	getMeterIds,
-} from "@/lib/energy-client";
+} from "@/api/energy-client";
+import { useEnergyFilters } from "@/contexts/energy-filters-context/energy-filters-context";
+import type { ConsumptionData, EnergyLog, EnergyStats } from "@/db/schema";
 
 interface DashboardContextType {
 	// Meter Data

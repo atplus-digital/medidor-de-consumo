@@ -1,14 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import type React from "react";
 import { createContext, useContext, useState } from "react";
-import { useEnergyFilters } from "@/contexts/energy-filters-context/energy-filters-context";
-import type { EnergyLog } from "@/db/schema";
 import {
-	type EnergyStats,
 	getEnergyLogs,
 	getEnergyStats,
 	getMeterIds,
-} from "@/lib/energy-client";
+} from "@/api/energy-client";
+import { useEnergyFilters } from "@/contexts/energy-filters-context/energy-filters-context";
+import type { EnergyLog, EnergyStats } from "@/db/schema";
 
 const PAGE_SIZE = 20;
 

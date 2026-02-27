@@ -1,5 +1,5 @@
-import type { RawEnergyData } from "@/lib/energy";
-import { jsonResponse } from "@/lib/http";
+import { jsonResponse } from "@/api";
+import type { RawEnergyData } from "@/db/schema";
 import * as energyService from "@/services/energy";
 
 /**

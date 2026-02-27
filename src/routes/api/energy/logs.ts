@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
+import { jsonResponse } from "@/api";
 import { db } from "@/db";
 import { energyLogTable } from "@/db/schema";
-import { jsonResponse } from "@/lib/http";
 
 export const Route = createFileRoute("/api/energy/logs")({
 	server: {

@@ -7,10 +7,7 @@ import {
 	timestamp,
 	varchar,
 } from "drizzle-orm/pg-core";
-import {
-	createInsertSchema,
-	createUpdateSchema,
-} from "drizzle-zod";
+import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
 import { metersTable } from "./meters";
 
 export const energyLogTable = pgTable(
@@ -61,3 +58,43 @@ export const energyLogUpdateSchema = createUpdateSchema(energyLogTable);
 // Types
 export type EnergyLog = typeof energyLogTable.$inferSelect;
 export type NewEnergyLog = typeof energyLogTable.$inferInsert;
+
+// Raw data from device
+export interface RawEnergyData {
+	id?: string;
+	pa?: string;
+	qa?: string;
+	sa?: string;
+	uarms?: string;
+	iarms?: string;
+	pfa?: string;
+	pga?: string;
+	freq?: string;
+	epa_c?: string;
+	epa_g?: string;
+	tpsd?: string;
+}
+
+// API response types
+export interface EnergyStats {
+	totalConsumed?: number;
+	totalGenerated?: number;
+	avgActivePower?: number;
+	maxActivePower?: number;
+	minActivePower?: number;
+	avgVoltage?: number;
+	avgCurrent?: number;
+	avgPowerFactor?: number;
+	totalReadings?: number;
+}
+
+export interface ConsumptionData extends Record<string, unknown> {
+	date: string;
+	totalConsumed: number;
+	totalGenerated: number;
+	avgActivePower: number;
+	maxActivePower: number;
+	avgVoltage: number;
+	avgCurrent: number;
+	readings: number;
+}

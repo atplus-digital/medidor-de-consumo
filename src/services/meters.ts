@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import {
@@ -6,7 +7,22 @@ import {
 	metersTable,
 	type UpdateMeter,
 } from "@/db/schema";
-import { generateMeterId } from "@/lib/meters";
+
+/**
+ * Generates a unique meter ID with optional prefix + UUID hash
+ * @param prefix Optional prefix for the meter ID
+ * @returns Unique meter ID in format: "prefix-uuid" or just "uuid" if no prefix
+ */
+function generateMeterId(prefix?: string | null): string {
+	const uuid = randomUUID();
+	const cleanUuid = uuid.replace(/-/g, "").substring(0, 12);
+
+	if (prefix && prefix.trim().length > 0) {
+		return `${prefix.trim()}-${cleanUuid}`;
+	}
+
+	return cleanUuid;
+}
 
 /**
  * Get all meters

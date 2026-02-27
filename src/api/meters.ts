@@ -1,4 +1,4 @@
-import { jsonResponse } from "@/lib/http";
+import { jsonResponse } from "@/api";
 import * as metersService from "@/services/meters";
 
 /**

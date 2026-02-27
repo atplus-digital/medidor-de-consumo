@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { getConsumptionByPeriod, getMeterIds } from "@/api/energy-client";
 import {
 	type ChartType,
 	ConsumptionChart,
@@ -15,7 +16,6 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEnergyFilters } from "@/contexts/energy-filters-context/energy-filters-context";
-import { getConsumptionByPeriod, getMeterIds } from "@/lib/energy-client";
 
 type Period = "daily" | "weekly" | "monthly";
 
