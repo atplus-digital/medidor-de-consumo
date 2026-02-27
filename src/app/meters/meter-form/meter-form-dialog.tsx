@@ -10,27 +10,31 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import type { Meter } from "@/db/schema";
-import { MeterForm } from ".";
+import { MeterForm } from "./meter-form";
 
 function MeterFormDialog({ meter }: { meter?: Meter }) {
 	const [open, setOpen] = useState(false);
+	const hasMeter = Boolean(meter);
+
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button>
-					{meter ? (
+					{hasMeter ? (
 						<Edit2 className="size-4" />
 					) : (
 						<PlusIcon className="size-4" />
 					)}
-					{meter ? "Editar" : "Adicionar Medidor"}
+					{hasMeter ? "Editar" : "Adicionar Medidor"}
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-2xl">
 				<DialogHeader>
-					<DialogTitle>{meter ? "Editar Medidor" : "Novo Medidor"}</DialogTitle>
+					<DialogTitle>
+						{hasMeter ? "Editar Medidor" : "Novo Medidor"}
+					</DialogTitle>
 					<DialogDescription>
-						{!meter && "Crie um novo medidor de energia"}
+						{!hasMeter && "Crie um novo medidor de energia"}
 					</DialogDescription>
 				</DialogHeader>
 				<MeterForm

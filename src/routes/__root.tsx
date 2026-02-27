@@ -6,7 +6,7 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import { RootContext } from "@/contexts/root-context";
+import { RootLayout } from "@/components/layout/root-layout";
 import TanStackQueryDevtools from "@/integrations/tanstack-query/devtools";
 import TanStackQueryProvider from "@/integrations/tanstack-query/root-provider";
 import appCss from "@/styles.css?url";
@@ -37,7 +37,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		],
 	}),
 	shellComponent: RootDocument,
-	component: RootContext,
+	component: RootLayout,
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {

@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { EnergyFiltersProvider } from "@/contexts/energy-filters-context/energy-filters-context";
 import { ThemeProvider } from "@/contexts/theme-context/theme-provider";
 
-function RootContext() {
+function RootLayout() {
 	return (
 		<ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
 			<EnergyFiltersProvider>
@@ -17,4 +17,4 @@ function RootContext() {
 	);
 }
 
-export { RootContext };
+export { RootLayout };

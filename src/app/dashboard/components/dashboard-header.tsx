@@ -1,5 +1,5 @@
 import { RefreshCwIcon } from "lucide-react";
-import { useDashboard } from "@/app/dashboard/context";
+import { useDashboard } from "@/app/dashboard/context/dashboard-context";
 import { MeterSelect } from "@/components/filters/meter-select";
 import { Button } from "@/components/ui/button";
 import { useEnergyFilters } from "@/contexts/energy-filters-context/energy-filters-context";

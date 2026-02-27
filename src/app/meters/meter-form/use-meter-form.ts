@@ -1,7 +1,13 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import type { Meter, UpdateMeter } from "@/db/schema";
+import {
+	type Meter,
+	type MeterFormData,
+	meterFormSchema,
+} from "@/db/schema";
 
 export interface SubmitState {
 	error: string | null;
@@ -9,20 +15,31 @@ export interface SubmitState {
 	loading: boolean;
 }
 
-export function useMeterFormSubmit(
-	meter: Meter | undefined,
-	onSuccess?: () => void,
-) {
+export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 	const queryClient = useQueryClient();
 
-	const handleSubmit = async (values: UpdateMeter) => {
+	const form = useForm<MeterFormData>({
+		resolver: zodResolver(meterFormSchema),
+		mode: "onBlur",
+		defaultValues: {
+			meterName: meter?.meterName ?? "",
+			meterType: meter?.meterType ?? "",
+			location: meter?.location ?? "",
+			status:
+				(meter?.status as "active" | "inactive" | "maintenance") ?? "active",
+			prefix: meter?.prefix ?? "",
+			isInverted: meter?.isInverted ?? false,
+		},
+	});
+
+	const handleSubmit = async (values: MeterFormData) => {
 		const url = meter ? `/api/meters/${meter.meterId}` : "/api/meters";
 
 		const payloadData: Record<string, string | number | undefined | boolean> = {
 			meterName: values.meterName?.trim(),
 			meterType: values.meterType?.trim(),
 			location: values.location?.trim(),
-			isInverted: values.isInverted || 0,
+			isInverted: values.isInverted || false,
 			status: values.status,
 		};
 
@@ -68,7 +85,7 @@ export function useMeterFormSubmit(
 	});
 
 	return {
+		form,
 		handleSubmit: mutation.mutateAsync,
-		isPending: mutation.isPending,
 	};
 }

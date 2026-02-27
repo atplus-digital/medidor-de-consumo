@@ -8,7 +8,7 @@ export const STATUS_LABELS: Record<string, string> = {
 
 export const FORM_PLACEHOLDERS = {
 	meterName: "ex.: Medidor Principal, Prédio A",
-	meterType: "ex.: Elétrico, Gás, Água",
+	meterType: "Modelo, Marca, Tipo...",
 	location: "ex.: Prédio A - Andar 1",
 	prefix: "ex.: MTR, MEDIDOR-A",
 };
@@ -17,7 +17,7 @@ export const FORM_LABELS = {
 	meterName: "Nome do Medidor *",
 	meterType: "Tipo do Medidor *",
 	location: "Localização *",
-	prefix: "Prefixo (Opcional)",
+	prefix: "Prefixo do Id (Opcional)",
 	status: "Status",
 	isInverted: "Medidor Invertido",
 };

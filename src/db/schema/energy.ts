@@ -1,5 +1,4 @@
 import {
-	boolean,
 	doublePrecision,
 	foreignKey,
 	integer,
@@ -10,37 +9,9 @@ import {
 } from "drizzle-orm/pg-core";
 import {
 	createInsertSchema,
-	createSelectSchema,
 	createUpdateSchema,
 } from "drizzle-zod";
-import type z from "zod";
-
-export const metersTable = pgTable("meters", {
-	// Identification
-	meterId: varchar("meter_id", { length: 100 }).primaryKey(),
-
-	// Information
-	meterName: varchar("meter_name", { length: 255 }).notNull(),
-	meterType: varchar("meter_type", { length: 50 }).notNull(),
-	location: varchar("location", { length: 255 }).notNull(),
-	status: varchar("status", { length: 50 }).notNull().default("active"),
-	prefix: varchar("prefix", { length: 50 }),
-
-	// Configuration
-	isInverted: boolean("is_inverted").notNull().default(false), // 0 = normal, 1 = inverted
-
-	// Timestamps
-	createdAt: timestamp("created_at").notNull().defaultNow(),
-	updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
-
-// Meters schemas
-export const metersSchema = createSelectSchema(metersTable);
-export const metersInsertSchema = createInsertSchema(metersTable);
-export const metersUpdateSchema = createUpdateSchema(metersTable);
-export type Meter = typeof metersTable.$inferSelect;
-export type NewMeter = typeof metersTable.$inferInsert;
-export type UpdateMeter = z.infer<typeof metersUpdateSchema>;
+import { metersTable } from "./meters";
 
 export const energyLogTable = pgTable(
 	"energy_log",
@@ -86,5 +57,7 @@ export const energyLogTable = pgTable(
 // Energy logs schemas
 export const energyLogSchema = createInsertSchema(energyLogTable);
 export const energyLogUpdateSchema = createUpdateSchema(energyLogTable);
+
+// Types
 export type EnergyLog = typeof energyLogTable.$inferSelect;
 export type NewEnergyLog = typeof energyLogTable.$inferInsert;

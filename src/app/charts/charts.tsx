@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEnergyFilters } from "@/contexts/energy-filters-context/energy-filters-context";
-import { getConsumptionByPeriod, getMeterIds } from "@/services/energy-client";
+import { getConsumptionByPeriod, getMeterIds } from "@/lib/energy-client";
 
 type Period = "daily" | "weekly" | "monthly";
 

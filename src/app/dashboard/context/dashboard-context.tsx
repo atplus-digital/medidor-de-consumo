@@ -10,7 +10,7 @@ import {
 	getEnergyStats,
 	getLatestReading,
 	getMeterIds,
-} from "@/services/energy-client";
+} from "@/lib/energy-client";
 
 interface DashboardContextType {
 	// Meter Data
