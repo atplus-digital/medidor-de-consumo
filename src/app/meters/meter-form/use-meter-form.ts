@@ -1,12 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { type Meter, type MeterFormData, meterFormSchema } from "@/db/schema";
-import { createMeterFn, updateMeterFn } from "@/server/meters";
+import {
+	createMeterFn,
+	normalizeReadingsFn,
+	updateMeterFn,
+} from "@/server/meters";
 
 export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 	const queryClient = useQueryClient();
+	const [shouldNormalize, setShouldNormalize] = useState(false);
+	const [isNormalizing, setIsNormalizing] = useState(false);
 
 	const form = useForm<MeterFormData>({
 		resolver: zodResolver(meterFormSchema),
@@ -36,6 +43,26 @@ export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 					},
 				},
 			});
+
+			// Normalize readings if isInverted was changed and user opted in
+			if (form.formState.dirtyFields.isInverted && shouldNormalize) {
+				setIsNormalizing(true);
+				try {
+					await normalizeReadingsFn({ data: meter.meterId });
+					toast.success("Leituras normalizadas com sucesso");
+					queryClient.invalidateQueries({ queryKey: ["energy-logs"] });
+					queryClient.invalidateQueries({ queryKey: ["energy-stats"] });
+				} catch (error) {
+					toast.error(
+						error instanceof Error
+							? error.message
+							: "Erro ao normalizar leituras",
+					);
+				} finally {
+					setShouldNormalize(false);
+					setIsNormalizing(false);
+				}
+			}
 		} else {
 			await createMeterFn({
 				data: {
@@ -44,6 +71,7 @@ export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 				},
 			});
 		}
+		form.reset(form.getValues());
 
 		return true;
 	};
@@ -52,6 +80,7 @@ export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 		mutationFn: handleSubmit,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["meters"] });
+
 			const successMessage = meter
 				? "Medidor atualizado com sucesso"
 				: "Medidor criado com sucesso";
@@ -70,5 +99,8 @@ export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 	return {
 		form,
 		handleSubmit: mutation.mutateAsync,
+		shouldNormalize,
+		setShouldNormalize,
+		isNormalizing,
 	};
 }

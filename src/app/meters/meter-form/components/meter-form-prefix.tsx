@@ -17,11 +17,12 @@ import {
 } from "../meter-form.constants";
 
 function MeterFormPrefix() {
-	const { control } = useFormContext();
+	const { control,formState:{isSubmitting} } = useFormContext();
 	return (
 		<FormField
 			control={control}
 			name="prefix"
+			disabled={isSubmitting}
 			render={({ field }) => (
 				<FormItem>
 					<FormLabel>{FORM_LABELS.prefix}</FormLabel>

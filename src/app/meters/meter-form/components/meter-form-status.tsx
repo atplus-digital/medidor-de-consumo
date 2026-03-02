@@ -22,17 +22,21 @@ import {
 } from "../meter-form.constants";
 
 function MeterFormStatus() {
-	const { control } = useFormContext();
+	const {
+		control,
+		formState: { isSubmitting },
+	} = useFormContext();
 	return (
 		<FormField
 			control={control}
 			name="status"
+			disabled={isSubmitting}
 			render={({ field }) => (
 				<FormItem>
 					<FormLabel>{FORM_LABELS.status}</FormLabel>
 					<FormControl>
 						<Select value={field.value} onValueChange={field.onChange}>
-							<SelectTrigger className="w-full">
+							<SelectTrigger disabled={isSubmitting} className="w-full">
 								<SelectValue placeholder="Selecione o status" />
 							</SelectTrigger>
 							<SelectContent>

@@ -1,4 +1,5 @@
 import { useFormContext } from "react-hook-form";
+
 import {
 	FormControl,
 	FormDescription,
@@ -8,16 +9,22 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
+import type { MeterFormData } from "@/db/schema";
 import { FORM_DESCRIPTIONS, FORM_LABELS } from "../meter-form.constants";
 
 function MeterFormIsInverted() {
-	const { control } = useFormContext();
+	const {
+		control,
+		formState: { isSubmitting },
+	} = useFormContext<MeterFormData>();
+
 	return (
 		<FormField
 			control={control}
 			name="isInverted"
+			disabled={isSubmitting}
 			render={({ field }) => (
-				<FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+				<FormItem className="flex flex-col items-center justify-between rounded-lg border p-4">
 					<div className="flex items-center justify-between w-full gap-2">
 						<div className="space-y-0.5">
 							<FormLabel className="text-base">
@@ -26,7 +33,11 @@ function MeterFormIsInverted() {
 							<FormDescription>{FORM_DESCRIPTIONS.isInverted}</FormDescription>
 						</div>
 						<FormControl>
-							<Switch checked={field.value} onCheckedChange={field.onChange} />
+							<Switch
+								disabled={isSubmitting}
+								checked={field.value}
+								onCheckedChange={field.onChange}
+							/>
 						</FormControl>
 					</div>
 					<FormMessage />

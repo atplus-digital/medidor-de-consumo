@@ -11,11 +11,15 @@ import { Input } from "@/components/ui/input";
 import { FORM_LABELS, FORM_PLACEHOLDERS } from "../meter-form.constants";
 
 function MeterFormLocation() {
-	const { control } = useFormContext();
+	const {
+		control,
+		formState: { isSubmitting },
+	} = useFormContext();
 	return (
 		<FormField
 			control={control}
 			name="location"
+			disabled={isSubmitting}
 			render={({ field }) => (
 				<FormItem>
 					<FormLabel>{FORM_LABELS.location}</FormLabel>

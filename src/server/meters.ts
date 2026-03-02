@@ -37,3 +37,9 @@ export const deleteMeterFn = createServerFn()
 	.handler(async ({ data }) => {
 		return metersService.deleteMeter(data);
 	});
+
+export const normalizeReadingsFn = createServerFn()
+	.inputValidator(z.string())
+	.handler(async ({ data }) => {
+		return metersService.normalizeReadings(data);
+	});

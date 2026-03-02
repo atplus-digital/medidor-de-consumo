@@ -25,7 +25,14 @@ function MeterFormButtons({
 			</Button>
 			<Button type="submit" disabled={isSubmitting || !isDirty}>
 				{isSubmitting && <Spinner />}
-				{hasMeter ? "Atualizar Medidor" : "Criar Medidor"}
+				{hasMeter
+					? isSubmitting
+						? "Atualizando "
+						: "Atualizar "
+					: isSubmitting
+						? "Criando "
+						: "Criar "}
+				Medidor
 			</Button>
 		</div>
 	);
