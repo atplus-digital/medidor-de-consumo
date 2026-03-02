@@ -1,4 +1,10 @@
-import { boolean, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
+import {
+	boolean,
+	numeric,
+	pgTable,
+	timestamp,
+	varchar,
+} from "drizzle-orm/pg-core";
 import {
 	createInsertSchema,
 	createSelectSchema,
@@ -16,6 +22,14 @@ export const metersTable = pgTable("meters", {
 	location: varchar("location", { length: 255 }).notNull(),
 	status: varchar("status", { length: 50 }).notNull().default("active"),
 	prefix: varchar("prefix", { length: 50 }),
+
+	//Cost Informations
+	costPerKwh: numeric("cost_per_kwh", { precision: 10, scale: 4 })
+		.notNull()
+		.default("0"),
+	revenuePerKwh: numeric("revenue_per_kwh", { precision: 10, scale: 4 })
+		.notNull()
+		.default("0"),
 
 	// Configuration
 	isInverted: boolean("is_inverted").notNull().default(false), // 0 = normal, 1 = inverted
@@ -62,6 +76,8 @@ export const meterFormSchema = z.object({
 		.optional()
 		.nullable(),
 	isInverted: z.boolean(),
+	costPerKwh: z.number().min(0, "Custo por kWh não pode ser negativo"),
+	revenuePerKwh: z.number().min(0, "Receita por kWh não pode ser negativa"),
 });
 
 export type MeterFormData = z.infer<typeof meterFormSchema>;

@@ -1,5 +1,5 @@
 {
-  "id": "1a52dcc1-32b2-4103-93ef-e976d2b3a3ac",
+  "id": "9827a187-2622-4450-bb07-2d5c01150d28",
   "prevId": "85e52e48-a14a-471a-b7c2-86e5115a0bf4",
   "version": "7",
   "dialect": "postgresql",
@@ -174,12 +174,26 @@
           "primaryKey": false,
           "notNull": false
         },
-        "is_inverted": {
-          "name": "is_inverted",
-          "type": "integer",
+        "cost_per_kwh": {
+          "name": "cost_per_kwh",
+          "type": "numeric(10, 4)",
           "primaryKey": false,
           "notNull": true,
-          "default": 0
+          "default": "'0'"
+        },
+        "revenue_per_kwh": {
+          "name": "revenue_per_kwh",
+          "type": "numeric(10, 4)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "is_inverted": {
+          "name": "is_inverted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         },
         "created_at": {
           "name": "created_at",

@@ -3,7 +3,16 @@ import { db } from "@/db";
 import { metersTable, metersUpdateSchema, type UpdateMeter } from "@/db/schema";
 
 export async function updateMeter(meterId: string, data: UpdateMeter) {
-	const validatedData = metersUpdateSchema.parse(data);
+	const processedData = {
+		...data,
+		...(data.costPerKwh !== undefined && {
+			costPerKwh: String(data.costPerKwh),
+		}),
+		...(data.revenuePerKwh !== undefined && {
+			revenuePerKwh: String(data.revenuePerKwh),
+		}),
+	};
+	const validatedData = metersUpdateSchema.parse(processedData);
 
 	const existingMeter = await db
 		.select()

@@ -20,6 +20,8 @@ export const FORM_LABELS = {
 	prefix: "Prefixo do Id (Opcional)",
 	status: "Status",
 	isInverted: "Medidor Invertido",
+	costPerKwh: "Custo por kWh (R$)",
+	revenuePerKwh: "Receita por kWh (R$)",
 };
 
 export const FORM_DESCRIPTIONS = {
@@ -27,4 +29,6 @@ export const FORM_DESCRIPTIONS = {
 		"O prefixo será combinado com um hash único para gerar o ID do medidor",
 	isInverted:
 		"Ative se o medidor foi instalado invertido. Isso inverterá o sinal da potência ativa/reativa e trocará consumo com geração.",
+	costPerKwh: "Valor pago por cada kWh consumido",
+	revenuePerKwh: "Valor recebido por cada kWh gerado/exportado",
 };

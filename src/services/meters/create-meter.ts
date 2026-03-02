@@ -24,6 +24,8 @@ export async function createMeter(data: MeterFormData) {
 			...data,
 			status: data.status || "active",
 			isInverted: data.isInverted ?? false,
+			costPerKwh: String(data.costPerKwh),
+			revenuePerKwh: String(data.revenuePerKwh),
 			createdAt: now,
 			updatedAt: now,
 		})

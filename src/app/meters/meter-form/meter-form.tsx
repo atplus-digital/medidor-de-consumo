@@ -1,10 +1,12 @@
 import { useFormContext } from "react-hook-form";
 import type { Meter, MeterFormData } from "@/db/schema";
 import { MeterFormButtons } from "./components/meter-form-buttons";
+import { MeterFormCostPerKwh } from "./components/meter-form-cost-per-kwh";
 import { MeterFormIsInverted } from "./components/meter-form-is-inverted";
 import { MeterFormLocation } from "./components/meter-form-location";
 import { MeterFormName } from "./components/meter-form-name";
 import { MeterFormPrefix } from "./components/meter-form-prefix";
+import { MeterFormRevenuePerKwh } from "./components/meter-form-revenue-per-kwh";
 import { MeterFormStatus } from "./components/meter-form-status";
 import { MeterFormType } from "./components/meter-form-type";
 import { MeterNormalizeReadings } from "./components/meter-normalize-readings";
@@ -42,13 +44,20 @@ export function MeterForm({
 				{!meter && <MeterFormPrefix />}
 				<MeterFormType />
 				<MeterFormLocation />
+
 				<MeterFormIsInverted />
-				{form.formState.dirtyFields.isInverted && (
+				{meter && form.formState.dirtyFields.isInverted && (
 					<MeterNormalizeReadings
 						isNormalizing={isNormalizing}
 						shouldNormalize={shouldNormalize}
 						setShouldNormalize={setShouldNormalize}
 					/>
+				)}
+				{meter && (
+					<div className="grid grid-cols-2 gap-4">
+						<MeterFormCostPerKwh />
+						<MeterFormRevenuePerKwh />
+					</div>
 				)}
 			</div>
 			<MeterFormButtons onCancel={onCancel} hasMeter={!!meter} />

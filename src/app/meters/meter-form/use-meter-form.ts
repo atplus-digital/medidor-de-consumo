@@ -26,6 +26,8 @@ export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 				(meter?.status as "active" | "inactive" | "maintenance") ?? "active",
 			prefix: meter?.prefix ?? "",
 			isInverted: meter?.isInverted ?? false,
+			costPerKwh: meter?.costPerKwh ? Number(meter.costPerKwh) : 0,
+			revenuePerKwh: meter?.revenuePerKwh ? Number(meter.revenuePerKwh) : 0,
 		},
 	});
 
@@ -40,6 +42,8 @@ export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 						location: values.location,
 						isInverted: values.isInverted,
 						status: values.status,
+						costPerKwh: values.costPerKwh,
+						revenuePerKwh: values.revenuePerKwh,
 					},
 				},
 			});

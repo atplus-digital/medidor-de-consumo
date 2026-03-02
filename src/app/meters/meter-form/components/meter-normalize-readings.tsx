@@ -33,6 +33,10 @@ function MeterNormalizeReadings({
 				<span className="text-sm font-normal text-muted-foreground">
 					Recalcula todas as leituras com base na nova configuração de inversão
 				</span>
+				<span className="text-sm font-normal text-muted-foreground">
+					Isso pode levar algum tempo dependendo da quantidade de leituras
+					registradas
+				</span>
 			</div>
 			<Switch
 				disabled={isSubmitting}
