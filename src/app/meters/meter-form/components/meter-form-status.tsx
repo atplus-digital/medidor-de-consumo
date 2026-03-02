@@ -30,7 +30,6 @@ function MeterFormStatus() {
 		<FormField
 			control={control}
 			name="status"
-			disabled={isSubmitting}
 			render={({ field }) => (
 				<FormItem>
 					<FormLabel>{FORM_LABELS.status}</FormLabel>

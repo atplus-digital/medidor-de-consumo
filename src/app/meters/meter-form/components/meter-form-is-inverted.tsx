@@ -22,7 +22,6 @@ function MeterFormIsInverted() {
 		<FormField
 			control={control}
 			name="isInverted"
-			disabled={isSubmitting}
 			render={({ field }) => (
 				<FormItem className="flex flex-col items-center justify-between rounded-lg border p-4">
 					<div className="flex items-center justify-between w-full gap-2">

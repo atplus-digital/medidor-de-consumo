@@ -19,12 +19,15 @@ function MeterFormLocation() {
 		<FormField
 			control={control}
 			name="location"
-			disabled={isSubmitting}
 			render={({ field }) => (
 				<FormItem>
 					<FormLabel>{FORM_LABELS.location}</FormLabel>
 					<FormControl>
-						<Input placeholder={FORM_PLACEHOLDERS.location} {...field} />
+						<Input
+							disabled={isSubmitting}
+							placeholder={FORM_PLACEHOLDERS.location}
+							{...field}
+						/>
 					</FormControl>
 					<FormMessage />
 				</FormItem>

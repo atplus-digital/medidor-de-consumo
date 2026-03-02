@@ -12,17 +12,23 @@ import { Input } from "@/components/ui/input";
 import { FORM_LABELS, FORM_PLACEHOLDERS } from "../meter-form.constants";
 
 function MeterFormName() {
-	const { control,formState:{isSubmitting} } = useFormContext();
+	const {
+		control,
+		formState: { isSubmitting },
+	} = useFormContext();
 	return (
 		<FormField
 			control={control}
 			name="meterName"
-			disabled={isSubmitting}
 			render={({ field }) => (
 				<FormItem>
 					<FormLabel>{FORM_LABELS.meterName}</FormLabel>
 					<FormControl>
-						<Input placeholder={FORM_PLACEHOLDERS.meterName} {...field} />
+						<Input
+							disabled={isSubmitting}
+							placeholder={FORM_PLACEHOLDERS.meterName}
+							{...field}
+						/>
 					</FormControl>
 					<FormMessage />
 				</FormItem>

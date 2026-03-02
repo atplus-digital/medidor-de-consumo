@@ -19,12 +19,15 @@ function MeterFormType() {
 		<FormField
 			control={control}
 			name="meterType"
-			disabled={isSubmitting}
 			render={({ field }) => (
 				<FormItem>
 					<FormLabel>{FORM_LABELS.meterType}</FormLabel>
 					<FormControl>
-						<Input placeholder={FORM_PLACEHOLDERS.meterType} {...field} />
+						<Input
+							disabled={isSubmitting}
+							placeholder={FORM_PLACEHOLDERS.meterType}
+							{...field}
+						/>
 					</FormControl>
 					<FormMessage />
 				</FormItem>

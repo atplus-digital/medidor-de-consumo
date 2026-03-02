@@ -17,17 +17,20 @@ import {
 } from "../meter-form.constants";
 
 function MeterFormPrefix() {
-	const { control,formState:{isSubmitting} } = useFormContext();
+	const {
+		control,
+		formState: { isSubmitting },
+	} = useFormContext();
 	return (
 		<FormField
 			control={control}
 			name="prefix"
-			disabled={isSubmitting}
 			render={({ field }) => (
 				<FormItem>
 					<FormLabel>{FORM_LABELS.prefix}</FormLabel>
 					<FormControl>
 						<Input
+							disabled={isSubmitting}
 							placeholder={FORM_PLACEHOLDERS.prefix}
 							title={"Prefixo não pode ser alterado após criação"}
 							maxLength={50}
