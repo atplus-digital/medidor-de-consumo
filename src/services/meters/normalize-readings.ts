@@ -1,8 +1,7 @@
 import { eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { energyLogTable, metersTable, type RawEnergyData } from "@/db/schema";
-import { adaptEnergyData } from "@/services/energy/log-energy/adapt-energy-data";
-import { invertReading } from "@/services/energy/log-energy/invert-reading";
+import { parseRawEnergyData } from "../energy/log-energy/parse-raw-energy-data";
 
 const BATCH_SIZE = 1000;
 
@@ -24,7 +23,7 @@ export async function normalizeReadings(meterId: string) {
 		.from(energyLogTable)
 		.where(eq(energyLogTable.meterId, meterId));
 
-	const totalLogs = countResult[0]?.count ?? 0;
+	const totalLogs = Number(countResult[0]?.count ?? 0);
 
 	if (totalLogs === 0) {
 		return { message: "No energy logs to normalize" };
@@ -40,14 +39,14 @@ export async function normalizeReadings(meterId: string) {
 			.select()
 			.from(energyLogTable)
 			.where(eq(energyLogTable.meterId, meterId))
+			.orderBy(sql`id DESC`)
 			.limit(BATCH_SIZE)
 			.offset(offset);
 
 		for (const log of energyLogs) {
 			const rawData = log.rawData as RawEnergyData;
 
-			const adapted = adaptEnergyData(rawData);
-			const normalized = meter.isInverted ? invertReading(adapted) : adapted;
+			const normalized = parseRawEnergyData(rawData, meter.isInverted);
 
 			await db
 				.update(energyLogTable)
@@ -57,6 +56,10 @@ export async function normalizeReadings(meterId: string) {
 			processedCount++;
 		}
 	}
+	console.log({
+		processedCount,
+		totalLogs,
+	});
 
 	return {
 		message: `Successfully normalized ${processedCount} energy logs in ${totalBatches} batch(es)`,

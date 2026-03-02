@@ -1,17 +1,18 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
+	flexRender,
+	getCoreRowModel,
+	getPaginationRowModel,
+	useReactTable,
+	type VisibilityState,
+} from "@tanstack/react-table";
+import { useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { EnergyLog } from "@/db/schema";
-import { formatDateTime, formatNumber } from "@/lib/format";
+import { ColumnVisibilitySelect } from "./colum-visibility-select";
+import { columns } from "./columns";
+import { EnergyTableBody } from "./energy-table-body";
+import { EnergyTablePagination } from "./energy-table-pagination";
 
 interface EnergyTableProps {
 	logs: EnergyLog[];
@@ -30,7 +31,29 @@ function EnergyTable({
 	onPageChange,
 	isLoading,
 }: EnergyTableProps) {
-	const totalPages = Math.ceil(total / pageSize);
+	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+		voltage: false,
+		current: false,
+		powerFactor: false,
+		frequency: false,
+	});
+
+	const table = useReactTable<EnergyLog>({
+		data: logs,
+		columns,
+		pageCount: Math.ceil(total / pageSize),
+		state: {
+			pagination: {
+				pageIndex: page - 1,
+				pageSize,
+			},
+			columnVisibility,
+		},
+		manualPagination: true,
+		getCoreRowModel: getCoreRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+		onColumnVisibilityChange: setColumnVisibility,
+	});
 
 	if (isLoading) {
 		return (
@@ -46,102 +69,36 @@ function EnergyTable({
 
 	return (
 		<div className="space-y-4">
+			<ColumnVisibilitySelect table={table} />
 			<div className="overflow-auto rounded-md border">
 				<Table>
 					<TableHeader>
-						<TableRow>
-							<TableHead className="w-16">ID</TableHead>
-							<TableHead>Medidor</TableHead>
-							<TableHead className="text-right">Pot. Ativa (W)</TableHead>
-							<TableHead className="text-right">Tensão (V)</TableHead>
-							<TableHead className="text-right">Corrente (A)</TableHead>
-							<TableHead className="text-right">FP</TableHead>
-							<TableHead className="text-right">Freq. (Hz)</TableHead>
-							<TableHead className="text-right">Consumo (kWh)</TableHead>
-							<TableHead className="text-right">Geração (kWh)</TableHead>
-							<TableHead>Data/Hora</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{logs.length === 0 ? (
-							<TableRow>
-								<TableCell
-									colSpan={10}
-									className="py-8 text-center text-muted-foreground"
-								>
-									Nenhum registro encontrado
-								</TableCell>
+						{table.getHeaderGroups().map((headerGroup) => (
+							<TableRow key={headerGroup.id}>
+								{headerGroup.headers.map((header) => (
+									<TableHead key={header.id}>
+										{header.isPlaceholder
+											? null
+											: flexRender(
+													header.column.columnDef.header,
+													header.getContext(),
+												)}
+									</TableHead>
+								))}
 							</TableRow>
-						) : (
-							logs.map((log) => (
-								<TableRow key={log.id}>
-									<TableCell className="font-mono text-xs">{log.id}</TableCell>
-									<TableCell>
-										<Badge variant="outline">{log.meterId}</Badge>
-									</TableCell>
-									<TableCell className="text-right font-mono">
-										{formatNumber(log.activePower)}
-									</TableCell>
-									<TableCell className="text-right font-mono">
-										{formatNumber(log.voltage, 1)}
-									</TableCell>
-									<TableCell className="text-right font-mono">
-										{formatNumber(log.current, 3)}
-									</TableCell>
-									<TableCell className="text-right font-mono">
-										{formatNumber(log.powerFactor, 3)}
-									</TableCell>
-									<TableCell className="text-right font-mono">
-										{formatNumber(log.frequency, 1)}
-									</TableCell>
-									<TableCell className="text-right font-mono">
-										{formatNumber(log.consumedEnergy, 4)}
-									</TableCell>
-									<TableCell className="text-right font-mono">
-										{formatNumber(log.generatedEnergy, 4)}
-									</TableCell>
-									<TableCell className="text-xs">
-										{log.createdAt ? formatDateTime(log.createdAt) : "-"}
-									</TableCell>
-								</TableRow>
-							))
-						)}
-					</TableBody>
+						))}
+					</TableHeader>
+					<EnergyTableBody table={table} />
 				</Table>
 			</div>
 
-			{/* Pagination */}
-			{totalPages > 1 && (
-				<div className="flex items-center justify-between">
-					<p className="text-sm text-muted-foreground">
-						Mostrando {(page - 1) * pageSize + 1} a{" "}
-						{Math.min(page * pageSize, total)} de {total} registros
-					</p>
-					<div className="flex items-center gap-2">
-						<Button
-							variant="outline"
-							size="sm"
-							onClick={() => onPageChange?.(page - 1)}
-							disabled={page <= 1}
-						>
-							<ChevronLeft className="size-4" />
-							Anterior
-						</Button>
-						<span className="text-sm text-muted-foreground">
-							Página {page} de {totalPages}
-						</span>
-						<Button
-							variant="outline"
-							size="sm"
-							onClick={() => onPageChange?.(page + 1)}
-							disabled={page >= totalPages}
-						>
-							Próxima
-							<ChevronRight className="size-4" />
-						</Button>
-					</div>
-				</div>
-			)}
+			<EnergyTablePagination
+				table={table}
+				total={total}
+				page={page}
+				pageSize={pageSize}
+				onPageChange={onPageChange ?? (() => {})}
+			/>
 		</div>
 	);
 }
