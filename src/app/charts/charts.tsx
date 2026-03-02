@@ -114,12 +114,12 @@ function Charts() {
 								{
 									key: "totalConsumed",
 									label: "Consumo (kWh)",
-									color: "hsl(var(--chart-1))",
+									color: "var(--chart-1)",
 								},
 								{
 									key: "totalGenerated",
 									label: "Geração (kWh)",
-									color: "hsl(var(--chart-2))",
+									color: "var(--chart-2)",
 								},
 							]}
 							type={chartType}
@@ -135,12 +135,12 @@ function Charts() {
 								{
 									key: "avgActivePower",
 									label: "Pot. Média (W)",
-									color: "hsl(var(--chart-3))",
+									color: "var(--chart-3)",
 								},
 								{
 									key: "maxActivePower",
 									label: "Pot. Máxima (W)",
-									color: "hsl(var(--chart-4))",
+									color: "var(--chart-4)",
 								},
 							]}
 							type="line"
@@ -156,7 +156,7 @@ function Charts() {
 								{
 									key: "avgVoltage",
 									label: "Tensão (V)",
-									color: "hsl(var(--chart-5))",
+									color: "var(--chart-5)",
 								},
 							]}
 							type="line"

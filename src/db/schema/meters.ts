@@ -75,9 +75,9 @@ export const meterFormSchema = z.object({
 		.trim()
 		.optional()
 		.nullable(),
-	isInverted: z.boolean(),
 	costPerKwh: z.number().min(0, "Custo por kWh não pode ser negativo"),
 	revenuePerKwh: z.number().min(0, "Receita por kWh não pode ser negativa"),
+	isInverted: z.boolean(),
 });
 
 export type MeterFormData = z.infer<typeof meterFormSchema>;
