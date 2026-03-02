@@ -49,6 +49,7 @@ export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 				setIsNormalizing(true);
 				try {
 					await normalizeReadingsFn({ data: meter.meterId });
+
 					toast.success("Leituras normalizadas com sucesso");
 					queryClient.invalidateQueries({ queryKey: ["energy-logs"] });
 					queryClient.invalidateQueries({ queryKey: ["energy-stats"] });
@@ -71,7 +72,6 @@ export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 				},
 			});
 		}
-		form.reset(form.getValues());
 
 		return true;
 	};

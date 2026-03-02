@@ -56,10 +56,6 @@ export async function normalizeReadings(meterId: string) {
 			processedCount++;
 		}
 	}
-	console.log({
-		processedCount,
-		totalLogs,
-	});
 
 	return {
 		message: `Successfully normalized ${processedCount} energy logs in ${totalBatches} batch(es)`,

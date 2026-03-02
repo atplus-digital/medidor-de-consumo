@@ -12,12 +12,12 @@ function WeekConsumptionChart() {
 				{
 					key: "totalConsumed",
 					label: "Consumo (kWh)",
-					color: "#f00",
+					color: "var(--chart-1)",
 				},
 				{
 					key: "totalGenerated",
 					label: "Geração (kWh)",
-					color: "#0f0",
+					color: "var(--chart-5)",
 				},
 			]}
 			type="area"

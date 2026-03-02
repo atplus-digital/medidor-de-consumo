@@ -30,8 +30,8 @@ function MeterFormDialog({ meter }: { meter?: Meter }) {
 		<Dialog
 			open={open}
 			onOpenChange={(open_) => {
+				setOpen(open_);
 				if (!form.formState.isSubmitting) {
-					setOpen(open_);
 				}
 			}}
 		>
