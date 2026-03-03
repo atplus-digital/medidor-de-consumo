@@ -28,7 +28,6 @@ export const getEnergyLogsFn = createServerFn({ method: "GET" })
 			.optional(),
 	)
 	.handler(async ({ data }) => {
-		await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
 		return energyService.getEnergyLogs({
 			startDate: data?.startDate,
 			endDate: data?.endDate,
