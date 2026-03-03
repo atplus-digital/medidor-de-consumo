@@ -59,7 +59,6 @@ export const getConsumptionByPeriodFn = createServerFn({ method: "GET" })
 	.inputValidator(
 		z
 			.object({
-				period: z.enum(["daily", "weekly", "monthly"]).optional(),
 				startDate: z.string().optional(),
 				endDate: z.string().optional(),
 				meterId: z.string().optional(),
@@ -68,7 +67,6 @@ export const getConsumptionByPeriodFn = createServerFn({ method: "GET" })
 	)
 	.handler(async ({ data }) => {
 		return energyService.getConsumptionByPeriod({
-			period: data?.period,
 			startDate: data?.startDate,
 			endDate: data?.endDate,
 			meterId: data?.meterId,
@@ -80,3 +78,21 @@ export const getEnergyMetersFn = createServerFn({ method: "GET" }).handler(
 		return energyService.getEnergyMeters();
 	},
 );
+
+export const getMeterResetsFn = createServerFn({ method: "GET" })
+	.inputValidator(
+		z
+			.object({
+				startDate: z.string().optional(),
+				endDate: z.string().optional(),
+				meterId: z.string().optional(),
+			})
+			.optional(),
+	)
+	.handler(async ({ data }) => {
+		return energyService.getMeterResets({
+			startDate: data?.startDate,
+			endDate: data?.endDate,
+			meterId: data?.meterId,
+		});
+	});

@@ -13,7 +13,7 @@ function ColumnVisibilitySelect({ table }: { table: Table<EnergyLog> }) {
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<Button variant="outline" className="ml-auto">
-					Columns
+					Colunas
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">

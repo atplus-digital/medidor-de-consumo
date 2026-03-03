@@ -85,6 +85,7 @@ function DateRangePicker({
 							onEndDateChange(date);
 							setEndOpen(false);
 						}}
+						disabled={(date) => (startDate ? date < startDate : false)}
 						locale={ptBR}
 						autoFocus
 					/>

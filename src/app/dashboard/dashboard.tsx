@@ -1,3 +1,4 @@
+import { MeterResets } from "@/app/dashboard/components/meter-resets";
 import { RealTimeReading } from "@/app/dashboard/components/real-time-reading/real-time-reading";
 import { DashboardProvider } from "@/app/dashboard/context/dashboard-provider";
 import { DashboardHeader } from "./components/dashboard-header";
@@ -12,6 +13,7 @@ function Dashboard() {
 				<Stats />
 				<RealTimeReading />
 				<WeekConsumptionChart />
+				<MeterResets />
 			</div>
 		</DashboardProvider>
 	);

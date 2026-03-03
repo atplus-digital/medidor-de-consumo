@@ -88,7 +88,7 @@ export interface EnergyStats {
 	totalReadings?: number;
 }
 
-export interface ConsumptionData extends Record<string, unknown> {
+export interface ConsumptionData {
 	date: string;
 	totalConsumed: number;
 	totalGenerated: number;
@@ -97,4 +97,12 @@ export interface ConsumptionData extends Record<string, unknown> {
 	avgVoltage: number;
 	avgCurrent: number;
 	readings: number;
+}
+
+export type IntervalType = "15min" | "hourly" | "daily" | "weekly";
+
+export interface ConsumptionByPeriodResult {
+	data: ConsumptionData[];
+	interval: IntervalType;
+	intervalLabel: string;
 }

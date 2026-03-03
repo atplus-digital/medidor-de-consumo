@@ -25,14 +25,14 @@ function StatCard({
 	className,
 }: StatCardProps) {
 	return (
-		<Card className={cn("transition-shadow hover:shadow-md", className)}>
-			<CardHeader className="flex flex-row items-center justify-between pb-2">
+		<Card className={cn("transition-shadow hover:shadow-md gap-2", className)}>
+			<CardHeader className="flex flex-row items-center justify-between ">
 				<CardTitle className="text-sm font-medium text-muted-foreground">
 					{title}
 				</CardTitle>
 				<Icon className="size-4 text-muted-foreground" />
 			</CardHeader>
-			<CardContent>
+			<CardContent className="">
 				<div className="flex items-baseline gap-1">
 					<span className="text-2xl font-bold">{value}</span>
 					{unit && (

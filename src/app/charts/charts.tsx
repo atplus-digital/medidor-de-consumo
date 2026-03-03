@@ -6,6 +6,7 @@ import {
 } from "@/app/charts/components/consumption-chart";
 import { DateRangePicker } from "@/components/filters/date-range-picker";
 import { MeterSelect } from "@/components/filters/meter-select";
+import { Badge } from "@/components/ui/badge";
 import {
 	Select,
 	SelectContent,
@@ -13,21 +14,11 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEnergyFilters } from "@/contexts/energy-filters-context/energy-filters-context";
 import { getConsumptionByPeriodFn, getEnergyMetersFn } from "@/server/energy";
 
-type Period = "daily" | "weekly" | "monthly";
-
-const periodLabels: Record<Period, string> = {
-	daily: "Diário",
-	weekly: "Semanal",
-	monthly: "Mensal",
-};
-
 function Charts() {
 	const { filters, setStartDate, setEndDate, setMeterId } = useEnergyFilters();
-	const [period, setPeriod] = useState<Period>("daily");
 	const [chartType, setChartType] = useState<ChartType>("area");
 
 	const { data: meterIds = [] } = useQuery({
@@ -35,10 +26,9 @@ function Charts() {
 		queryFn: () => getEnergyMetersFn(),
 	});
 
-	const { data: consumptionData = [], isLoading } = useQuery({
+	const { data: consumptionResult, isLoading } = useQuery({
 		queryKey: [
 			"consumption-by-period",
-			period,
 			filters.startDate?.toISOString(),
 			filters.endDate?.toISOString(),
 			filters.meterId,
@@ -46,7 +36,6 @@ function Charts() {
 		queryFn: () =>
 			getConsumptionByPeriodFn({
 				data: {
-					period,
 					startDate: filters.startDate?.toISOString(),
 					endDate: filters.endDate?.toISOString(),
 					meterId: filters.meterId,
@@ -54,14 +43,22 @@ function Charts() {
 			}),
 	});
 
+	const consumptionData = consumptionResult?.data ?? [];
+	const intervalLabel = consumptionResult?.intervalLabel ?? "";
+
 	return (
 		<div className="space-y-6">
 			{/* Header */}
-			<div>
-				<h1 className="text-2xl font-bold tracking-tight">Gráficos</h1>
-				<p className="text-muted-foreground">
-					Visualização interativa do consumo de energia
-				</p>
+			<div className="flex items-center justify-between">
+				<div>
+					<h1 className="text-2xl font-bold tracking-tight">Gráficos</h1>
+					<p className="text-muted-foreground">
+						Visualização interativa do consumo de energia
+					</p>
+				</div>
+				{intervalLabel && (
+					<Badge variant="secondary">Intervalo: {intervalLabel}</Badge>
+				)}
 			</div>
 
 			{/* Filters */}
@@ -92,80 +89,66 @@ function Charts() {
 				</Select>
 			</div>
 
-			{/* Period Tabs */}
-			<Tabs value={period} onValueChange={(val) => setPeriod(val as Period)}>
-				<TabsList>
-					{(Object.entries(periodLabels) as [Period, string][]).map(
-						([key, label]) => (
-							<TabsTrigger key={key} value={key}>
-								{label}
-							</TabsTrigger>
-						),
-					)}
-				</TabsList>
+			{/* Charts */}
+			<div className="space-y-6">
+				{/* Consumption Chart */}
+				<ConsumptionChart
+					title={`Consumo por ${intervalLabel}`}
+					data={consumptionData}
+					dataKeys={[
+						{
+							key: "totalConsumed",
+							label: "Consumo (kWh)",
+							color: "var(--chart-1)",
+						},
+						{
+							key: "totalGenerated",
+							label: "Geração (kWh)",
+							color: "var(--chart-2)",
+						},
+					]}
+					type={chartType}
+					isLoading={isLoading}
+					height={400}
+				/>
 
-				{(Object.keys(periodLabels) as Period[]).map((p) => (
-					<TabsContent key={p} value={p} className="space-y-6">
-						{/* Consumption Chart */}
-						<ConsumptionChart
-							title={`Consumo ${periodLabels[p]}`}
-							data={consumptionData}
-							dataKeys={[
-								{
-									key: "totalConsumed",
-									label: "Consumo (kWh)",
-									color: "var(--chart-1)",
-								},
-								{
-									key: "totalGenerated",
-									label: "Geração (kWh)",
-									color: "var(--chart-2)",
-								},
-							]}
-							type={chartType}
-							isLoading={isLoading}
-							height={400}
-						/>
+				{/* Power Chart */}
+				<ConsumptionChart
+					title={`Potência por ${intervalLabel}`}
+					data={consumptionData}
+					dataKeys={[
+						{
+							key: "avgActivePower",
+							label: "Pot. Média (W)",
+							color: "var(--chart-3)",
+						},
+						{
+							key: "maxActivePower",
+							label: "Pot. Máxima (W)",
+							color: "var(--chart-4)",
+						},
+					]}
+					type="line"
+					isLoading={isLoading}
+					height={350}
+				/>
 
-						{/* Power Chart */}
-						<ConsumptionChart
-							title={`Potência ${periodLabels[p]}`}
-							data={consumptionData}
-							dataKeys={[
-								{
-									key: "avgActivePower",
-									label: "Pot. Média (W)",
-									color: "var(--chart-3)",
-								},
-								{
-									key: "maxActivePower",
-									label: "Pot. Máxima (W)",
-									color: "var(--chart-4)",
-								},
-							]}
-							type="line"
-							isLoading={isLoading}
-							height={350}
-						/>
-
-						{/* Voltage Chart */}
-						<ConsumptionChart
-							title={`Tensão Média ${periodLabels[p]}`}
-							data={consumptionData}
-							dataKeys={[
-								{
-									key: "avgVoltage",
-									label: "Tensão (V)",
-									color: "var(--chart-5)",
-								},
-							]}
-							type="line"
-							isLoading={isLoading}
-							height={300}
-						/>
-					</TabsContent>
-				))}
-			</Tabs>
+				{/* Voltage Chart */}
+				<ConsumptionChart
+					title={`Tensão Média por ${intervalLabel}`}
+					data={consumptionData}
+					dataKeys={[
+						{
+							key: "avgVoltage",
+							label: "Tensão (V)",
+							color: "var(--chart-5)",
+						},
+					]}
+					type="line"
+					isLoading={isLoading}
+					height={300}
+				/>
+			</div>
 		</div>
 	);
 }

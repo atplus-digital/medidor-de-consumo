@@ -35,10 +35,9 @@ function EnergyTablePagination({
 					variant="outline"
 					size="sm"
 					onClick={() => {
-						table.previousPage();
 						onPageChange(page - 1);
 					}}
-					disabled={!table.getCanPreviousPage()}
+					disabled={page <= 1}
 				>
 					<ChevronLeft className="size-4" />
 					Anterior
@@ -50,10 +49,9 @@ function EnergyTablePagination({
 					variant="outline"
 					size="sm"
 					onClick={() => {
-						table.nextPage();
 						onPageChange(page + 1);
 					}}
-					disabled={!table.getCanNextPage()}
+					disabled={page >= totalPages}
 				>
 					Próxima
 					<ChevronRight className="size-4" />

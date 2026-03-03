@@ -25,18 +25,19 @@ export async function getEnergyLogs({
 
 	const where = conditions.length > 0 ? and(...conditions) : undefined;
 
-	const logs = await db
-		.select()
-		.from(energyLogTable)
-		.where(where)
-		.orderBy(desc(energyLogTable.createdAt))
-		.limit(limit)
-		.offset(offset);
-
-	const countResult = await db
-		.select({ count: sql<number>`cast(count(*) as integer)` })
-		.from(energyLogTable)
-		.where(where);
+	const [logs, countResult] = await Promise.all([
+		db
+			.select()
+			.from(energyLogTable)
+			.where(where)
+			.orderBy(desc(energyLogTable.createdAt))
+			.limit(limit)
+			.offset(offset),
+		db
+			.select({ count: sql<number>`cast(count(*) as integer)` })
+			.from(energyLogTable)
+			.where(where),
+	]);
 
 	return { logs, total: countResult[0]?.count ?? 0 };
 }

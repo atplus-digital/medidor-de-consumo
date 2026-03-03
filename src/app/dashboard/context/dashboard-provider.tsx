@@ -27,12 +27,11 @@ function DashboardProvider({ children }: { children: React.ReactNode }) {
 		refetchInterval: 10000,
 	});
 
-	const { data: dailyData = [], isLoading: isLoadingChart } = useQuery({
-		queryKey: ["daily-consumption-dashboard", filters.meterId],
+	const { data: consumptionResult, isLoading: isLoadingChart } = useQuery({
+		queryKey: ["daily-consumption-dashboard", filters.meterId, new Date().toDateString()],
 		queryFn: () =>
 			getConsumptionByPeriodFn({
 				data: {
-					period: "daily",
 					startDate: subDays(new Date(), 7).toISOString(),
 					endDate: new Date().toISOString(),
 					meterId: filters.meterId,
@@ -40,8 +39,15 @@ function DashboardProvider({ children }: { children: React.ReactNode }) {
 			}),
 	});
 
+	const dailyData = consumptionResult?.data ?? [];
+
 	const { data: stats, isLoading: isLoadingStats } = useQuery({
-		queryKey: ["energy-stats", filters.meterId],
+		queryKey: [
+			"energy-stats",
+			filters.startDate?.toISOString(),
+			filters.endDate?.toISOString(),
+			filters.meterId,
+		],
 		queryFn: () =>
 			getEnergyStatsFn({
 				data: {

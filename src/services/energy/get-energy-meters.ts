@@ -1,13 +1,12 @@
-import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { energyLogTable, metersTable } from "@/db/schema";
+import { metersTable } from "@/db/schema";
 
 export async function getEnergyMeters() {
 	return db
-		.selectDistinct({
-			id: energyLogTable.meterId,
+		.select({
+			id: metersTable.meterId,
 			meterName: metersTable.meterName,
 		})
-		.from(energyLogTable)
-		.innerJoin(metersTable, eq(energyLogTable.meterId, metersTable.meterId));
+		.from(metersTable)
+		.orderBy(metersTable.meterName);
 }
