@@ -46,7 +46,7 @@ export const metersUpdateSchema = createUpdateSchema(metersTable);
 
 // Types
 export type Meter = typeof metersTable.$inferSelect;
-export type NewMeter = typeof metersTable.$inferInsert;
+export type InsertMeter = typeof metersTable.$inferInsert;
 export type UpdateMeter = z.infer<typeof metersUpdateSchema>;
 
 // Custom validation schema for meter form

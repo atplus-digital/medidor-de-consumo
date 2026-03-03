@@ -8,8 +8,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { FORM_LABELS, FORM_PLACEHOLDERS } from "../meter-form.constants";
-
 function MeterFormLocation() {
 	const {
 		control,
@@ -21,13 +19,9 @@ function MeterFormLocation() {
 			name="location"
 			render={({ field }) => (
 				<FormItem>
-					<FormLabel>{FORM_LABELS.location}</FormLabel>
+					<FormLabel>Localização *</FormLabel>
 					<FormControl>
-						<Input
-							disabled={isSubmitting}
-							placeholder={FORM_PLACEHOLDERS.location}
-							{...field}
-						/>
+						<Input disabled={isSubmitting} placeholder="ex.: Prédio A - Andar 1" {...field} />
 					</FormControl>
 					<FormMessage />
 				</FormItem>

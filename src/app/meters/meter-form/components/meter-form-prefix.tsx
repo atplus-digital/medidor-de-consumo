@@ -10,11 +10,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import {
-	FORM_DESCRIPTIONS,
-	FORM_LABELS,
-	FORM_PLACEHOLDERS,
-} from "../meter-form.constants";
 
 function MeterFormPrefix() {
 	const {
@@ -27,18 +22,20 @@ function MeterFormPrefix() {
 			name="prefix"
 			render={({ field }) => (
 				<FormItem>
-					<FormLabel>{FORM_LABELS.prefix}</FormLabel>
+					<FormLabel>Prefixo do Id (Opcional)</FormLabel>
 					<FormControl>
 						<Input
 							disabled={isSubmitting}
-							placeholder={FORM_PLACEHOLDERS.prefix}
+							placeholder="ex.: MTR, MEDIDOR-A"
 							title={"Prefixo não pode ser alterado após criação"}
 							maxLength={50}
 							{...field}
 							value={field.value || ""}
 						/>
 					</FormControl>
-					<FormDescription>{FORM_DESCRIPTIONS.prefix}</FormDescription>
+					<FormDescription>
+						O prefixo será combinado com um hash único para gerar o ID do medidor
+					</FormDescription>
 					<FormMessage />
 				</FormItem>
 			)}

@@ -4,7 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import type { Meter } from "@/db/schema";
-import { STATUS_LABELS } from "../../meter-form/meter-form.constants";
+
+// Hard-coded status labels (inlined per request)
+const STATUS_LABELS: Record<string, string> = {
+	active: "Ativo",
+	inactive: "Inativo",
+	maintenance: "Manutenção",
+};
+
 import { MeterFormDialog } from "../../meter-form/meter-form-dialog";
 import { DeleteMeterButton } from "./delete-meter-button";
 

@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { MeterFormData } from "@/db/schema";
-import { FORM_DESCRIPTIONS, FORM_LABELS } from "../meter-form.constants";
 
 function MeterFormCostPerKwh() {
 	const {
@@ -23,7 +22,7 @@ function MeterFormCostPerKwh() {
 			name="costPerKwh"
 			render={({ field }) => (
 				<FormItem>
-					<FormLabel>{FORM_LABELS.costPerKwh}</FormLabel>
+					<FormLabel>Custo por kWh (R$)</FormLabel>
 					<FormControl>
 						<Input
 							type="number"
@@ -41,7 +40,7 @@ function MeterFormCostPerKwh() {
 							}
 						/>
 					</FormControl>
-					<FormDescription>{FORM_DESCRIPTIONS.costPerKwh}</FormDescription>
+					<FormDescription>Valor pago por cada kWh consumido</FormDescription>
 					<FormMessage />
 				</FormItem>
 			)}

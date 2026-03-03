@@ -1,9 +1,9 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { type MeterFormData, metersTable } from "@/db/schema";
+import { type InsertMeter, metersTable } from "@/db/schema";
 import { generateMeterId } from "./generate-meter-id";
 
-export async function createMeter(data: MeterFormData) {
+export async function createMeter(data: InsertMeter) {
 	const meterId = generateMeterId(data.prefix || undefined);
 
 	const existingMeter = await db
@@ -20,8 +20,8 @@ export async function createMeter(data: MeterFormData) {
 	const newMeter = await db
 		.insert(metersTable)
 		.values({
-			meterId,
 			...data,
+			meterId,
 			status: data.status || "active",
 			isInverted: data.isInverted ?? false,
 			costPerKwh: String(data.costPerKwh),

@@ -12,8 +12,8 @@ import {
 
 export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 	const queryClient = useQueryClient();
+
 	const [shouldNormalize, setShouldNormalize] = useState(false);
-	const [isNormalizing, setIsNormalizing] = useState(false);
 
 	const form = useForm<MeterFormData>({
 		resolver: zodResolver(meterFormSchema),
@@ -32,44 +32,8 @@ export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 	});
 
 	const handleSubmit = async (values: MeterFormData) => {
-		if (meter) {
-			await updateMeterFn({
-				data: {
-					meterId: meter.meterId,
-					data: {
-						meterName: values.meterName,
-						meterType: values.meterType,
-						location: values.location,
-						isInverted: values.isInverted,
-						status: values.status,
-						costPerKwh: values.costPerKwh,
-						revenuePerKwh: values.revenuePerKwh,
-					},
-				},
-			});
-
-			// Normalize readings if isInverted was changed and user opted in
-			if (form.formState.dirtyFields.isInverted && shouldNormalize) {
-				setIsNormalizing(true);
-				try {
-					await normalizeReadingsFn({ data: meter.meterId });
-
-					toast.success("Leituras normalizadas com sucesso");
-					queryClient.invalidateQueries({ queryKey: ["energy-logs"] });
-					queryClient.invalidateQueries({ queryKey: ["energy-stats"] });
-				} catch (error) {
-					toast.error(
-						error instanceof Error
-							? error.message
-							: "Erro ao normalizar leituras",
-					);
-				} finally {
-					setShouldNormalize(false);
-					setIsNormalizing(false);
-				}
-			}
-		} else {
-			await createMeterFn({
+		if (!meter) {
+			return await createMeterFn({
 				data: {
 					...values,
 					prefix: values.prefix?.trim() || null,
@@ -77,8 +41,51 @@ export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 			});
 		}
 
-		return true;
+		const updated = await updateMeterFn({
+			data: {
+				meterId: meter.meterId,
+				data: {
+					meterName: values.meterName,
+					meterType: values.meterType,
+					location: values.location,
+					isInverted: values.isInverted,
+					status: values.status,
+					costPerKwh: values.costPerKwh,
+					revenuePerKwh: values.revenuePerKwh,
+				},
+			},
+		});
+
+		const isInvertedChanged = form.formState.dirtyFields.isInverted;
+
+		if (isInvertedChanged && shouldNormalize) {
+			try {
+				await normalizeReadings.mutateAsync();
+			} finally {
+				setShouldNormalize(false);
+			}
+		}
+
+		return updated;
 	};
+
+	const normalizeReadings = useMutation({
+		mutationFn: async () => {
+			if (!meter?.meterId) {
+				return;
+			}
+			return toast.promise(
+				async () => await normalizeReadingsFn({ data: meter.meterId }),
+				{
+					position: "bottom-right",
+					loading: "Normalizando leituras...",
+					success: "Leituras normalizadas com sucesso!",
+					error: (err) => `Error: ${err.message}`,
+				},
+			);
+		},
+		mutationKey: ["normalize-readings", meter?.meterId],
+	});
 
 	const mutation = useMutation({
 		mutationFn: handleSubmit,
@@ -89,22 +96,24 @@ export function useMeterForm(meter: Meter | undefined, onSuccess?: () => void) {
 				? "Medidor atualizado com sucesso"
 				: "Medidor criado com sucesso";
 
-			toast.success(successMessage);
+			toast.success(successMessage, { duration: 1000 });
 			onSuccess?.();
 		},
 		onError: (error) => {
 			toast.error(error instanceof Error ? error.message : "Ocorreu um erro");
 		},
 		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: ["energy-logs"] });
+			queryClient.invalidateQueries({ queryKey: ["energy-stats"] });
 			queryClient.invalidateQueries({ queryKey: ["meters"] });
+			queryClient.invalidateQueries({ queryKey: ["meter", meter?.meterId] });
 		},
 	});
 
 	return {
 		form,
-		handleSubmit: mutation.mutateAsync,
+		handleSubmit: form.handleSubmit((values) => mutation.mutateAsync(values)),
 		shouldNormalize,
 		setShouldNormalize,
-		isNormalizing,
 	};
 }

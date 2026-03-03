@@ -15,11 +15,13 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 
-import {
-	FORM_LABELS,
-	STATUS_LABELS,
-	STATUS_OPTIONS,
-} from "../meter-form.constants";
+// Hard-coded labels/options (inlined per request)
+const STATUS_OPTIONS = ["active", "inactive", "maintenance"] as const;
+const STATUS_LABELS: Record<string, string> = {
+	active: "Ativo",
+	inactive: "Inativo",
+	maintenance: "Manutenção",
+};
 
 function MeterFormStatus() {
 	const {
@@ -32,7 +34,7 @@ function MeterFormStatus() {
 			name="status"
 			render={({ field }) => (
 				<FormItem>
-					<FormLabel>{FORM_LABELS.status}</FormLabel>
+					<FormLabel>Status</FormLabel>
 					<FormControl>
 						<Select value={field.value} onValueChange={field.onChange}>
 							<SelectTrigger disabled={isSubmitting} className="w-full">

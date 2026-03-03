@@ -9,8 +9,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { FORM_LABELS, FORM_PLACEHOLDERS } from "../meter-form.constants";
-
 function MeterFormName() {
 	const {
 		control,
@@ -22,13 +20,9 @@ function MeterFormName() {
 			name="meterName"
 			render={({ field }) => (
 				<FormItem>
-					<FormLabel>{FORM_LABELS.meterName}</FormLabel>
+					<FormLabel>Nome do Medidor *</FormLabel>
 					<FormControl>
-						<Input
-							disabled={isSubmitting}
-							placeholder={FORM_PLACEHOLDERS.meterName}
-							{...field}
-						/>
+						<Input disabled={isSubmitting} placeholder="ex.: Medidor Principal, Prédio A" {...field} />
 					</FormControl>
 					<FormMessage />
 				</FormItem>
