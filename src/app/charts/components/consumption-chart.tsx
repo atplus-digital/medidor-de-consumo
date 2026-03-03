@@ -19,18 +19,19 @@ import {
 	ChartTooltipContent,
 } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { ConsumptionData } from "@/db/schema";
 
 type ChartType = "area" | "bar" | "line";
 
-interface ConsumptionChartProps {
+interface ConsumptionChartProps<T = ConsumptionData> {
 	title: string;
-	data: Record<string, unknown>[];
+	data: T[];
 	dataKeys: {
-		key: string;
+		key: string & keyof T;
 		label: string;
 		color: string;
 	}[];
-	xAxisKey?: string;
+	xAxisKey?: string & keyof T;
 	type?: ChartType;
 	isLoading?: boolean;
 	height?: number;
