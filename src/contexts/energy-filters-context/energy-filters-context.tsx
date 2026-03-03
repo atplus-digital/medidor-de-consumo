@@ -1,4 +1,4 @@
-import { subDays } from "date-fns";
+import { endOfDay, startOfDay, subDays } from "date-fns";
 import { createContext, type ReactNode, useContext, useState } from "react";
 
 interface EnergyFilters {
@@ -18,8 +18,8 @@ interface EnergyFiltersContextType {
 
 function getDefaultFilters(): EnergyFilters {
 	return {
-		startDate: subDays(new Date(), 30),
-		endDate: new Date(),
+		startDate: startOfDay(subDays(new Date(), 30)),
+		endDate: endOfDay(new Date()),
 		meterId: undefined,
 	};
 }
@@ -32,16 +32,20 @@ function EnergyFiltersProvider({ children }: { children: ReactNode }) {
 	const [filters, setFilters] = useState<EnergyFilters>(getDefaultFilters);
 
 	const setStartDate = (date: Date | undefined) =>
-		setFilters((prev) => ({ ...prev, startDate: date }));
+		setFilters((prev) => ({ ...prev, startDate: date && startOfDay(date) }));
 
 	const setEndDate = (date: Date | undefined) =>
-		setFilters((prev) => ({ ...prev, endDate: date }));
+		setFilters((prev) => ({ ...prev, endDate: date && endOfDay(date) }));
 
 	const setMeterId = (id: string | undefined) =>
 		setFilters((prev) => ({ ...prev, meterId: id }));
 
 	const setDateRange = (start: Date | undefined, end: Date | undefined) =>
-		setFilters((prev) => ({ ...prev, startDate: start, endDate: end }));
+		setFilters((prev) => ({
+			...prev,
+			startDate: start && startOfDay(start),
+			endDate: end && endOfDay(end),
+		}));
 
 	const resetFilters = () => setFilters(getDefaultFilters());
 

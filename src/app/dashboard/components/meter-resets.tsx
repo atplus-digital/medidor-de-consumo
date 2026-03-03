@@ -11,17 +11,10 @@ function MeterResets() {
 	const { filters } = useEnergyFilters();
 
 	const { data: resets = [], isLoading } = useQuery({
-		queryKey: [
-			"meter-resets",
-			filters.startDate?.toISOString(),
-			filters.endDate?.toISOString(),
-			filters.meterId,
-		],
+		queryKey: ["meter-resets", filters.meterId],
 		queryFn: () =>
 			getMeterResetsFn({
 				data: {
-					startDate: filters.startDate?.toISOString(),
-					endDate: filters.endDate?.toISOString(),
 					meterId: filters.meterId,
 				},
 			}),
@@ -66,43 +59,18 @@ function MeterResets() {
 								<div className="flex items-center justify-between">
 									<Badge variant="outline">Medidor: {reset.meterId}</Badge>
 									<span className="text-xs text-muted-foreground">
-										{reset.detectedAt
-											? formatDateTime(reset.detectedAt)
-											: "-"}
+										{reset.detectedAt ? formatDateTime(reset.detectedAt) : "-"}
 									</span>
 								</div>
 								<div className="mt-1 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
 									<span>
-										Consumo antes:{" "}
-										{formatNumber(reset.previousConsumed ?? 0, 4)} kWh
+										Consumo antes: {formatNumber(reset.previousConsumed, 4)} kWh
 									</span>
 									<span>
-										Consumo após reset:{" "}
-										{formatNumber(reset.resetConsumed ?? 0, 4)} kWh
-									</span>
-									<span>
-										Geração antes:{" "}
-										{formatNumber(reset.previousGenerated ?? 0, 4)} kWh
-									</span>
-									<span>
-										Geração após reset:{" "}
-										{formatNumber(reset.resetGenerated ?? 0, 4)} kWh
-									</span>
-									<span>
-										Tempo operação antes:{" "}
-										{formatNumber(reset.previousOperationTime ?? 0, 0)} s
-									</span>
-									<span>
-										Tempo operação após:{" "}
-										{formatNumber(reset.resetOperationTime ?? 0, 0)} s
+										Consumo após reset: {formatNumber(reset.resetConsumed, 4)}{" "}
+										kWh
 									</span>
 								</div>
-								{reset.lastReadingBefore && (
-									<p className="mt-1 text-xs text-muted-foreground">
-										Última leitura antes:{" "}
-										{formatDateTime(reset.lastReadingBefore)}
-									</p>
-								)}
 							</div>
 						))}
 					</div>
