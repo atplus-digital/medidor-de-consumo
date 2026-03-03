@@ -9,7 +9,7 @@ import {
 	getEnergyStatsFn,
 } from "@/server/energy";
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 interface ReportsContextValue {
 	// Filters
@@ -31,12 +31,14 @@ interface ReportsContextValue {
 	meterIds: Array<{ id: string; meterName: string }>;
 	logs: EnergyLog[];
 	total: number;
-	stats: EnergyStats | undefined;
+	stats?: EnergyStats | null;
 
 	// Loading states
 	isLoadingMeters: boolean;
 	isLoadingLogs: boolean;
 	isLoadingStats: boolean;
+	isPlaceholderData: boolean;
+	isFetching: boolean;
 }
 
 const ReportsContext = createContext<ReportsContextValue | undefined>(
@@ -52,7 +54,13 @@ function ReportsProvider({ children }: { children: React.ReactNode }) {
 		queryFn: () => getEnergyMetersFn(),
 	});
 
-	const { data: logsData, isLoading: isLoadingLogs } = useQuery({
+	const {
+		data: logsData,
+		isLoading: isLoadingLogs,
+		isPlaceholderData,
+		isFetching,
+		
+	} = useQuery({
 		queryKey: [
 			"energy-logs",
 			filters.startDate?.toISOString(),
@@ -70,6 +78,7 @@ function ReportsProvider({ children }: { children: React.ReactNode }) {
 					offset: (page - 1) * PAGE_SIZE,
 				},
 			}),
+		placeholderData: (prev) => prev,
 	});
 
 	const { data: stats, isLoading: isLoadingStats } = useQuery({
@@ -117,6 +126,8 @@ function ReportsProvider({ children }: { children: React.ReactNode }) {
 		total: logsData?.total ?? 0,
 		stats,
 		isLoadingMeters,
+		isPlaceholderData,
+		isFetching,
 		isLoadingLogs,
 		isLoadingStats,
 	};

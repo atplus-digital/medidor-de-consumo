@@ -11,12 +11,12 @@ function WeekConsumptionChart() {
 			dataKeys={[
 				{
 					key: "totalConsumed",
-					label: "Consumo (kWh)",
+					label: "Consumo (Wh)",
 					color: "var(--chart-1)",
 				},
 				{
 					key: "totalGenerated",
-					label: "Geração (kWh)",
+					label: "Geração (Wh)",
 					color: "var(--chart-5)",
 				},
 			]}

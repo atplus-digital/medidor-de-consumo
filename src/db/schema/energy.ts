@@ -79,23 +79,44 @@ export interface RawEnergyData {
 export interface EnergyStats {
 	totalConsumed?: number;
 	totalGenerated?: number;
+	energyBalance?: number;
 	avgActivePower?: number;
 	maxActivePower?: number;
 	minActivePower?: number;
+	avgReactivePower?: number;
+	avgApparentPower?: number;
 	avgVoltage?: number;
+	minVoltage?: number;
+	maxVoltage?: number;
 	avgCurrent?: number;
+	maxCurrent?: number;
 	avgPowerFactor?: number;
+	minPowerFactor?: number;
+	avgFrequency?: number;
+	minFrequency?: number;
+	maxFrequency?: number;
 	totalReadings?: number;
+	totalOperationTime?: number;
+	avgDailyConsumption?: number;
+	estimatedCost?: number;
+	estimatedRevenue?: number;
+	netCost?: number;
 }
 
 export interface ConsumptionData {
 	date: string;
 	totalConsumed: number;
 	totalGenerated: number;
+	energyBalance: number;
 	avgActivePower: number;
 	maxActivePower: number;
+	minActivePower: number;
 	avgVoltage: number;
+	minVoltage: number;
+	maxVoltage: number;
 	avgCurrent: number;
+	avgPowerFactor: number;
+	avgFrequency: number;
 	readings: number;
 }
 

@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { ConsumptionData } from "@/db/schema";
+import { formatChartDate, formatNumber } from "@/lib/format";
 
 type ChartType = "area" | "bar" | "line";
 
@@ -99,8 +100,8 @@ function ConsumptionChart({
 				return (
 					<AreaChart data={data} margin={margin}>
 						<CartesianGrid strokeDasharray="3 3" />
-						<XAxis dataKey={xAxisKey} />
-						<YAxis />
+						<XAxis dataKey={xAxisKey} tickFormatter={formatChartDate} tick={{ fontSize: 11 }} />
+						<YAxis tick={{ fontSize: 11 }} tickFormatter={(v: number) => formatNumber(v, 1)} />
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<ChartLegend content={<ChartLegendContent />} />
 						{dataKeys.map((dk) => (
@@ -120,8 +121,8 @@ function ConsumptionChart({
 				return (
 					<BarChart data={data} margin={margin}>
 						<CartesianGrid strokeDasharray="3 3" />
-						<XAxis dataKey={xAxisKey} />
-						<YAxis />
+						<XAxis dataKey={xAxisKey} tickFormatter={formatChartDate} tick={{ fontSize: 11 }} />
+						<YAxis tick={{ fontSize: 11 }} tickFormatter={(v: number) => formatNumber(v, 1)} />
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<ChartLegend content={<ChartLegendContent />} />
 						{dataKeys.map((dk) => (
@@ -138,8 +139,8 @@ function ConsumptionChart({
 				return (
 					<LineChart data={data} margin={margin}>
 						<CartesianGrid strokeDasharray="3 3" />
-						<XAxis dataKey={xAxisKey} />
-						<YAxis />
+						<XAxis dataKey={xAxisKey} tickFormatter={formatChartDate} tick={{ fontSize: 11 }} />
+						<YAxis tick={{ fontSize: 11 }} tickFormatter={(v: number) => formatNumber(v, 1)} />
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<ChartLegend content={<ChartLegendContent />} />
 						{dataKeys.map((dk) => (

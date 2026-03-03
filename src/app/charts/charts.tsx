@@ -112,6 +112,22 @@ function Charts() {
 					height={400}
 				/>
 
+				{/* Energy Balance Chart */}
+				<ConsumptionChart
+					title={`Balanço Energético por ${intervalLabel}`}
+					data={consumptionData}
+					dataKeys={[
+						{
+							key: "energyBalance",
+							label: "Balanço (kWh)",
+							color: "var(--chart-3)",
+						},
+					]}
+					type="bar"
+					isLoading={isLoading}
+					height={300}
+				/>
+
 				{/* Power Chart */}
 				<ConsumptionChart
 					title={`Potência por ${intervalLabel}`}
@@ -135,18 +151,76 @@ function Charts() {
 
 				{/* Voltage Chart */}
 				<ConsumptionChart
-					title={`Tensão Média por ${intervalLabel}`}
+					title={`Tensão por ${intervalLabel}`}
 					data={consumptionData}
 					dataKeys={[
 						{
 							key: "avgVoltage",
-							label: "Tensão (V)",
+							label: "Tensão Média (V)",
 							color: "var(--chart-5)",
+						},
+						{
+							key: "minVoltage",
+							label: "Tensão Mín. (V)",
+							color: "var(--chart-4)",
+						},
+						{
+							key: "maxVoltage",
+							label: "Tensão Máx. (V)",
+							color: "var(--chart-1)",
 						},
 					]}
 					type="line"
 					isLoading={isLoading}
 					height={300}
+				/>
+
+				{/* Current Chart */}
+				<ConsumptionChart
+					title={`Corrente Média por ${intervalLabel}`}
+					data={consumptionData}
+					dataKeys={[
+						{
+							key: "avgCurrent",
+							label: "Corrente (A)",
+							color: "var(--chart-2)",
+						},
+					]}
+					type="line"
+					isLoading={isLoading}
+					height={280}
+				/>
+
+				{/* Power Factor Chart */}
+				<ConsumptionChart
+					title={`Fator de Potência por ${intervalLabel}`}
+					data={consumptionData}
+					dataKeys={[
+						{
+							key: "avgPowerFactor",
+							label: "FP Médio",
+							color: "var(--chart-1)",
+						},
+					]}
+					type="line"
+					isLoading={isLoading}
+					height={280}
+				/>
+
+				{/* Frequency Chart */}
+				<ConsumptionChart
+					title={`Frequência por ${intervalLabel}`}
+					data={consumptionData}
+					dataKeys={[
+						{
+							key: "avgFrequency",
+							label: "Frequência (Hz)",
+							color: "var(--chart-3)",
+						},
+					]}
+					type="line"
+					isLoading={isLoading}
+					height={250}
 				/>
 			</div>
 		</div>

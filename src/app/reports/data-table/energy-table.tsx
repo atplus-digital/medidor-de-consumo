@@ -21,6 +21,8 @@ interface EnergyTableProps {
 	pageSize?: number;
 	onPageChange?: (page: number) => void;
 	isLoading?: boolean;
+	isPlaceholderData?: boolean;
+	isFetching?: boolean;
 }
 
 function EnergyTable({
@@ -30,6 +32,8 @@ function EnergyTable({
 	pageSize = 20,
 	onPageChange,
 	isLoading,
+	isPlaceholderData,
+	isFetching,
 }: EnergyTableProps) {
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
 		voltage: false,
@@ -55,7 +59,7 @@ function EnergyTable({
 		onColumnVisibilityChange: setColumnVisibility,
 	});
 
-	if (isLoading) {
+	if (isLoading && !isPlaceholderData) {
 		return (
 			<div className="space-y-3">
 				<Skeleton className="h-12 w-full" />
@@ -70,7 +74,10 @@ function EnergyTable({
 	return (
 		<div className="space-y-4">
 			<ColumnVisibilitySelect table={table} />
-			<div className="overflow-auto rounded-md border">
+			<div className="relative overflow-auto rounded-md border">
+				{isFetching && isPlaceholderData && (
+					<div className="absolute inset-0 z-10 bg-muted/80" />
+				)}
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (

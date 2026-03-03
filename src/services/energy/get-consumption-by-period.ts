@@ -36,17 +36,22 @@ function resolveInterval(
 	return "daily";
 }
 
+/**
+ * Expressão SQL de agrupamento de datas, já convertida para UTC-3 (America/Sao_Paulo).
+ * Isso garante que os dados sejam agrupados corretamente no fuso horário local.
+ */
 function getDateGroupExpression(interval: IntervalType) {
+	const tz = sql`AT TIME ZONE 'America/Sao_Paulo'`;
 	switch (interval) {
 		case "15min":
-			return sql`(date_trunc('hour', created_at) + (EXTRACT(minute FROM created_at)::int / 15) * interval '15 minutes')::text`;
+			return sql`(date_trunc('hour', created_at ${tz}) + (EXTRACT(minute FROM created_at ${tz})::int / 15) * interval '15 minutes')::text`;
 		case "hourly":
-			return sql`date_trunc('hour', created_at)::text`;
+			return sql`date_trunc('hour', created_at ${tz})::text`;
 		case "weekly":
-			return sql`date_trunc('week', created_at)::date::text`;
+			return sql`date_trunc('week', (created_at ${tz})::date)::text`;
 		case "daily":
 		default:
-			return sql`date(created_at)::text`;
+			return sql`(created_at ${tz})::date::text`;
 	}
 }
 
@@ -60,6 +65,8 @@ function getDateGroupExpression(interval: IntervalType) {
  *
  * O intervalo de agrupamento é calculado automaticamente com base
  * no range de datas selecionado.
+ *
+ * Todas as datas são convertidas para UTC-3 (America/Sao_Paulo).
  */
 export async function getConsumptionByPeriod({
 	startDate,
@@ -103,6 +110,8 @@ export async function getConsumptionByPeriod({
 				active_power,
 				voltage,
 				"current",
+				power_factor,
+				frequency,
 				created_at,
 				LAG(consumed_energy) OVER (PARTITION BY meter_id ORDER BY created_at) AS prev_consumed,
 				LAG(generated_energy) OVER (PARTITION BY meter_id ORDER BY created_at) AS prev_generated
@@ -114,6 +123,8 @@ export async function getConsumptionByPeriod({
 				active_power,
 				voltage,
 				"current",
+				power_factor,
+				frequency,
 				created_at,
 				CASE
 					WHEN prev_consumed IS NULL THEN 0
@@ -132,10 +143,16 @@ export async function getConsumptionByPeriod({
 			${dateExpr} AS "date",
 			COALESCE(SUM(delta_consumed), 0)::double precision AS "totalConsumed",
 			COALESCE(SUM(delta_generated), 0)::double precision AS "totalGenerated",
+			(COALESCE(SUM(delta_consumed), 0) - COALESCE(SUM(delta_generated), 0))::double precision AS "energyBalance",
 			COALESCE(AVG(active_power), 0)::double precision AS "avgActivePower",
 			COALESCE(MAX(active_power), 0)::double precision AS "maxActivePower",
+			COALESCE(MIN(active_power), 0)::double precision AS "minActivePower",
 			COALESCE(AVG(voltage), 0)::double precision AS "avgVoltage",
+			COALESCE(MIN(voltage), 0)::double precision AS "minVoltage",
+			COALESCE(MAX(voltage), 0)::double precision AS "maxVoltage",
 			COALESCE(AVG("current"), 0)::double precision AS "avgCurrent",
+			COALESCE(AVG(power_factor), 0)::double precision AS "avgPowerFactor",
+			COALESCE(AVG(frequency), 0)::double precision AS "avgFrequency",
 			CAST(COUNT(*) AS integer) AS "readings"
 		FROM deltas
 		GROUP BY 1

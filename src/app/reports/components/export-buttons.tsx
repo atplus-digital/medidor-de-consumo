@@ -1,21 +1,30 @@
 import { FileDown, FileSpreadsheet } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import type { EnergyLog } from "@/db/schema";
+import type { EnergyLog, EnergyStats } from "@/db/schema";
 import { exportToCsv, exportToPdf } from "@/services/export";
 
 interface ExportButtonsProps {
 	logs: EnergyLog[];
+	stats?: EnergyStats | null;
 	filename?: string;
+	periodLabel?: string;
+	meterLabel?: string;
 }
 
-function ExportButtons({ logs, filename }: ExportButtonsProps) {
+function ExportButtons({
+	logs,
+	stats,
+	filename,
+	periodLabel,
+	meterLabel,
+}: ExportButtonsProps) {
 	const [exporting, setExporting] = useState<"pdf" | "csv" | null>(null);
 
 	const handleExportPdf = async () => {
 		setExporting("pdf");
 		try {
-			await exportToPdf(logs, filename);
+			await exportToPdf({ logs, stats, filename, periodLabel, meterLabel });
 		} finally {
 			setExporting(null);
 		}
@@ -24,7 +33,7 @@ function ExportButtons({ logs, filename }: ExportButtonsProps) {
 	const handleExportCsv = () => {
 		setExporting("csv");
 		try {
-			exportToCsv(logs, filename);
+			exportToCsv({ logs, stats, filename, periodLabel, meterLabel });
 		} finally {
 			setExporting(null);
 		}

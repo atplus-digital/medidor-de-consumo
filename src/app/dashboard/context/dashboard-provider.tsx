@@ -68,7 +68,7 @@ function DashboardProvider({ children }: { children: React.ReactNode }) {
 				refetchReading,
 				dailyData,
 				isLoadingChart,
-				stats,
+				stats: stats ?? undefined,
 				isLoadingStats,
 			}}
 		>
